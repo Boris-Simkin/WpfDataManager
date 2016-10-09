@@ -96,6 +96,10 @@ namespace Project_DataStructures
                 contactNameBox.Text = customer.ContactName;
                 phoneNumberBox.Text = customer.Phone;
             }
+            if (count > 1)
+            {
+                ClearTextBoxes();
+            }
         }
 
         private bool DeleteSelected()
