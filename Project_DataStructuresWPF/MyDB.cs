@@ -59,42 +59,58 @@ namespace Project_DataStructures
 
         public MyDB Select(Customer customer)
         {
+            MyDB newDB = new MyDB();
+
+            newDB.SelectBy(customer.CustomerID, Dictionary.CustomerID);
+            newDB.SelectBy(customer.CompanyName, Dictionary.CompanyName);
+            newDB.SelectBy(customer.ContactName, Dictionary.ContactName);
+            newDB.SelectBy(customer.Phone, Dictionary.Phone);
+
+            return newDB;
+        }
+
+        private MyDB SelectBy(string field, Dictionary selectBy)
+        {
             MyLinkedList<Link<Customer>> newList = new MyLinkedList<Link<Customer>>();
             MyDB result = new MyDB();
-            //result.Insert(customer);
 
-            if (byCustomerID.ContainsKey(customer.CustomerID))
-            {
-                var line = byCustomerID[customer.CustomerID].Data;
-                result.Insert(line);
-                return result;
-            }
-
-            if (byCompanyName.ContainsKey(customer.CompanyName))
-            {
-                foreach (var link in byCompanyName[customer.CompanyName])
+            if (selectBy == Dictionary.CustomerID && field != "")
+                if (byCustomerID.ContainsKey(field))
                 {
-                    var line = link.Data;
+                    var line = byCustomerID[field].Data;
                     result.Insert(line);
+                    return result;
                 }
-            }
 
-            if (byContactName.ContainsKey(customer.ContactName))
-            {
-                foreach (var link in byContactName[customer.ContactName])
+            if (selectBy == Dictionary.CompanyName && field != "")
+                if (byCompanyName.ContainsKey(field))
                 {
-                    var line = link.Data;
-                    //result.Insert(line);
+                    foreach (var link in byCompanyName[field])
+                    {
+                        var line = link.Data;
+                        result.Insert(line);
+                    }
                 }
-            }
 
-            if (byPhone.ContainsKey(customer.Phone))
-            {
-                foreach (var link in byPhone[customer.Phone])
+            if (selectBy == Dictionary.ContactName && field != "")
+                if (byContactName.ContainsKey(field))
                 {
-                    var line = link.Data;
+                    foreach (var link in byContactName[field])
+                    {
+                        var line = link.Data;
+                        result.Insert(line);
+                    }
                 }
-            }
+
+            if (selectBy == Dictionary.Phone && field != "")
+                if (byPhone.ContainsKey(field))
+                {
+                    foreach (var link in byPhone[field])
+                    {
+                        var line = link.Data;
+                        result.Insert(line);
+                    }
+                }
 
             return result;
         }

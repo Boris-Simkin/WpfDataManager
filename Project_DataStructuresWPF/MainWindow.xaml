@@ -19,9 +19,15 @@
         <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click"/>
         <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="96"/>
         <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="96"/>
-        <DataGrid x:Name="dataGrid" Margin="119,71,10.334,10" CellEditEnding="dataGrid_CellEditEnding" SelectionChanged="dataGrid_SelectionChanged" PreviewKeyDown="dataGrid_PreviewKeyDown"/>
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
-        <TextBlock x:Name="debugTxtBlk" HorizontalAlignment="Left" Margin="0,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="36" Width="142"/>
         <Button x:Name="clearBtn" Content="Clear" HorizontalAlignment="Left" Margin="510,29,0,0" VerticalAlignment="Top" Width="55" Click="clearBtn_Click"/>
+        <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
+        <TabControl x:Name="tableTabControl" Margin="124,74,10,10" SelectionChanged="tableTabControl_SelectionChanged">
+            <TabItem Header="new table">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="595,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="31,296,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="button_Click"/>
     </Grid>
 </Window>
