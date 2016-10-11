@@ -27,7 +27,7 @@ namespace Project_DataStructures
             //Fax = fax;
         }
 
-        public Link<Customer> Index { get; set; }
+        //public Link<Customer> Index { get; set; }
         public string CustomerID { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }

@@ -21,52 +21,30 @@ namespace Project_DataStructures
     /// </summary>
     public partial class MainWindow : Window
     {
-        //MyDB table = new MyDB();
-        //MyLinkedList<MyDB> dbList = new MyLinkedList<MyDB>();
         Dictionary<string, MyDB> tableList = new Dictionary<string, MyDB>();
-        
-
-        //string currentTable = "new table";
 
         public MainWindow()
         {
             InitializeComponent();
-            //Init();
-            //Init();
-            //TabItem ti = tableTabControl.SelectedItem as TabItem;
-
-            //dg.ItemsSource = currentTable.ToList();
-
-            // tableList.Add(GetCurrentTableName(), new MyDB());
+            CreateNewTable("new table");
         }
 
-        private void Init()
-        {
-            //TabItem ti = (TabItem)tableTabControl.Items[1];
-            TabItem ti = tableTabControl.SelectedItem as TabItem;
-            DataGrid newDG = new DataGrid();
-            ti.Content = newDG;
-
-            DataGrid dg = (DataGrid)ti.Content;
-            //dg.ItemsSource = currentTable.ToList();
-        }
-
-        private string GetCurrentTableName()
+        private string CurrentTabName()
         {
             TabItem ti = tableTabControl.SelectedItem as TabItem;
-            return ((TextBlock)ti.Header).Text;
+            return ti.Header.ToString(); 
         }
 
-        private MyDB currentTable
+        private MyDB CurrentTable
         {
             get
             {
-                return tableList[GetCurrentTableName()];
+                return tableList[CurrentTabName()];
             }
 
             set
             {
-                tableList[GetCurrentTableName()] = value;
+                tableList[CurrentTabName()] = value;
             }
         }
 
@@ -96,21 +74,23 @@ namespace Project_DataStructures
 
         private void RefreshGrid()
         {
-            currentDataGrid.ItemsSource = currentTable.ToList();//table.ToList();
-
-
+            currentDataGrid.ItemsSource = CurrentTable.ToList();
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
-            currentDataGrid.Columns[0].Visibility = Visibility.Hidden;
+
+            //currentDataGrid.Columns[0].Visibility = Visibility.Hidden;
         }
 
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
         {
-            currentTable.Insert(LoadFromSQL.Load());
+            CurrentTable.Insert(LoadFromSQL.Load());
             RefreshGrid();
         }
 
+        #region dataGridEvents
         private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            DataGrid dataGrid = sender as DataGrid;
+
             if (e.EditAction == DataGridEditAction.Commit)
             {
                 var column = e.Column as DataGridBoundColumn;
@@ -122,7 +102,7 @@ namespace Project_DataStructures
                     //the value of the edited element
                     var newValue = (e.EditingElement as TextBox).Text;
 
-                    DataGridCellInfo selected = currentDataGrid.SelectedCells[0];
+                    DataGridCellInfo selected = dataGrid.SelectedCells[0];
                     Customer customer = selected.Item as Customer;
 
                     if (bindingPath == "CompanyName")
@@ -134,9 +114,10 @@ namespace Project_DataStructures
                     if (bindingPath == "Phone")
                         customer.Phone = newValue;
 
-                    currentTable.Update(customer);
-                    //int rowIndex = e.Row.GetIndex();
-                    // rowIndex has the row index
+                    
+                    //tableList[CurrentTabName()].Update(customer);
+                    CurrentTable.Update(customer);
+                    textBlock.Text = CurrentTable.ContainsCompanyName("Antonio Moreno Taquería").ToString();
                 }
 
             }
@@ -145,10 +126,12 @@ namespace Project_DataStructures
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int count = currentDataGrid.SelectedItems.Count;
+            DataGrid dataGrid = sender as DataGrid;
+
+            int count = dataGrid.SelectedItems.Count;
             if (count == 1)
             {
-                DataGridCellInfo selected = currentDataGrid.SelectedCells[0];
+                DataGridCellInfo selected = dataGrid.SelectedCells[0];
                 Customer customer = selected.Item as Customer;
                 customerIdBox.Text = customer.CustomerID;
                 companyNameBox.Text = customer.CompanyName;
@@ -160,6 +143,13 @@ namespace Project_DataStructures
                 ClearTextBoxes();
             }
         }
+
+        private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+                e.Handled = !DeleteSelected();
+        }
+        #endregion
 
         private bool DeleteSelected()
         {
@@ -179,17 +169,11 @@ namespace Project_DataStructures
             if (result != MessageBoxResult.No)
             {
                 var items = currentDataGrid.SelectedItems;
-                currentTable.MultipleDelete(items);
+                CurrentTable.MultipleDelete(items);
                 return true;
             }
 
             return false;
-        }
-
-        private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Delete)
-                e.Handled = !DeleteSelected();
         }
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
@@ -204,9 +188,9 @@ namespace Project_DataStructures
         private void insertBtn_Click(object sender, RoutedEventArgs e)
         {
 
-            if (!currentTable.ContainsCustomerID(customerIdBox.Text))
+            if (!CurrentTable.ContainsCustomerID(customerIdBox.Text))
             {
-                currentTable.Insert(new Customer(customerIdBox.Text, companyNameBox.Text, contactNameBox.Text,
+                CurrentTable.Insert(new Customer(customerIdBox.Text, companyNameBox.Text, contactNameBox.Text,
                     phoneNumberBox.Text));
                 RefreshGrid();
             }
@@ -231,46 +215,40 @@ namespace Project_DataStructures
 
         private void CreateNewTable(string tableName)
         {
+            //creating new DataGrid
             DataGrid newDG = new DataGrid();
+
+            //creating new MyDB table
+            MyDB newTable = new MyDB();
+
+            //adding this table to the created DataGrid
+            newDG.ItemsSource = newTable.ToList();
+
+            //adding this table to tables dictionary 
+            tableList.Add(tableName, newTable);
+            
+            //subscribing the created DataGrid to the events
+            newDG.SelectionChanged += dataGrid_SelectionChanged;
+            newDG.CellEditEnding += dataGrid_CellEditEnding;
+            newDG.PreviewKeyDown += dataGrid_PreviewKeyDown;
+
+            //creating new TabItem
             TabItem newItem = new TabItem
             {
+                //the content of the TabItem is the created DataGrid
                 Content = newDG,
-                Header = new TextBlock { Text = tableName }
+                Header = tableName
             };
+            //adding the TabItem to the tabControl
             tableTabControl.Items.Add(newItem);
+            //select the new tab
             newItem.IsSelected = true;
-
-
-
-            //tableList.Add(tableTabControl.Items.Count, new MyDB());
-            tableList.Add(GetCurrentTableName(), new MyDB());
-            //var a = tableList[GetCurrentTableName()];
-            //tableTabControl.Items[3]
-            TabItem ti = tableTabControl.SelectedItem as TabItem;
-            DataGrid dg = (DataGrid)ti.Content;
-            dg.ItemsSource = currentTable.ToList();
-            //ctrl.
-            //ti.Content
-
-            //tableTabControl.Items[0] = newItem;
         }
 
         private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //currentDataGrid.SelectionChanged += dataGrid_SelectionChanged;
 
-            //TabItem item = sender as TabItem;
-            //if (item != null)
-            //{
-            //    TabItem ti = tableTabControl.SelectedItem as TabItem;
-            //    MessageBox.Show("This is " + ti.Header + " tab");
-
-            //}
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            Init();
-        }
     }
 }

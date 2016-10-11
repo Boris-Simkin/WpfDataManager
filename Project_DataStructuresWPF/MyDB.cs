@@ -14,7 +14,7 @@ namespace Project_DataStructures
     class MyDB : IEnumerable<Customer>
     {
         [Flags]
-        enum Dictionary
+        enum CustomerField
         {
             CustomerID = 1,
             CompanyName = 2,
@@ -25,10 +25,10 @@ namespace Project_DataStructures
 
         MyLinkedList<Customer> _customersTable = new MyLinkedList<Customer>();
 
-        Dictionary<string, Link<Customer>> byCustomerID = new Dictionary<string, Link<Customer>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> byCompanyName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> byContactName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> byPhone = new Dictionary<string, MyLinkedList<Link<Customer>>>();
+        Dictionary<string, Link<Customer>> dictCustomerID = new Dictionary<string, Link<Customer>>();
+        Dictionary<string, MyLinkedList<Link<Customer>>> dictCompanyName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
+        Dictionary<string, MyLinkedList<Link<Customer>>> dictContactName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
+        Dictionary<string, MyLinkedList<Link<Customer>>> dictPhone = new Dictionary<string, MyLinkedList<Link<Customer>>>();
 
         public MyDB() { }
 
@@ -39,73 +39,73 @@ namespace Project_DataStructures
 
         public bool ContainsCustomerID(string id)
         {
-            return byCustomerID.ContainsKey(id);
+            return dictCustomerID.ContainsKey(id);
         }
 
         public bool ContainsCompanyName(string companyName)
         {
-            return byCompanyName.ContainsKey(companyName);
+            return dictCompanyName.ContainsKey(companyName);
         }
 
         public bool ContainsContactName(string contactName)
         {
-            return byContactName.ContainsKey(contactName);
+            return dictContactName.ContainsKey(contactName);
         }
 
         public bool ContainsPhone(string phone)
         {
-            return byPhone.ContainsKey(phone);
+            return dictPhone.ContainsKey(phone);
         }
 
         public MyDB Select(Customer customer)
         {
             MyDB newDB = new MyDB();
 
-            newDB.SelectBy(customer.CustomerID, Dictionary.CustomerID);
-            newDB.SelectBy(customer.CompanyName, Dictionary.CompanyName);
-            newDB.SelectBy(customer.ContactName, Dictionary.ContactName);
-            newDB.SelectBy(customer.Phone, Dictionary.Phone);
+            newDB.SelectBy(customer.CustomerID, CustomerField.CustomerID);
+            newDB.SelectBy(customer.CompanyName, CustomerField.CompanyName);
+            newDB.SelectBy(customer.ContactName, CustomerField.ContactName);
+            newDB.SelectBy(customer.Phone, CustomerField.Phone);
 
             return newDB;
         }
 
-        private MyDB SelectBy(string field, Dictionary selectBy)
+        private MyDB SelectBy(string field, CustomerField selectBy)
         {
             MyLinkedList<Link<Customer>> newList = new MyLinkedList<Link<Customer>>();
             MyDB result = new MyDB();
 
-            if (selectBy == Dictionary.CustomerID && field != "")
-                if (byCustomerID.ContainsKey(field))
+            if (selectBy == CustomerField.CustomerID && field != "")
+                if (dictCustomerID.ContainsKey(field))
                 {
-                    var line = byCustomerID[field].Data;
+                    var line = dictCustomerID[field].Data;
                     result.Insert(line);
                     return result;
                 }
 
-            if (selectBy == Dictionary.CompanyName && field != "")
-                if (byCompanyName.ContainsKey(field))
+            if (selectBy == CustomerField.CompanyName && field != "")
+                if (dictCompanyName.ContainsKey(field))
                 {
-                    foreach (var link in byCompanyName[field])
+                    foreach (var link in dictCompanyName[field])
                     {
                         var line = link.Data;
                         result.Insert(line);
                     }
                 }
 
-            if (selectBy == Dictionary.ContactName && field != "")
-                if (byContactName.ContainsKey(field))
+            if (selectBy == CustomerField.ContactName && field != "")
+                if (dictContactName.ContainsKey(field))
                 {
-                    foreach (var link in byContactName[field])
+                    foreach (var link in dictContactName[field])
                     {
                         var line = link.Data;
                         result.Insert(line);
                     }
                 }
 
-            if (selectBy == Dictionary.Phone && field != "")
-                if (byPhone.ContainsKey(field))
+            if (selectBy == CustomerField.Phone && field != "")
+                if (dictPhone.ContainsKey(field))
                 {
-                    foreach (var link in byPhone[field])
+                    foreach (var link in dictPhone[field])
                     {
                         var line = link.Data;
                         result.Insert(line);
@@ -115,50 +115,50 @@ namespace Project_DataStructures
             return result;
         }
 
-        void AddToDictionaries(Link<Customer> link, Dictionary dictionary)
+        void AddToDictionaries(Link<Customer> link, CustomerField field)
         {
-            if (dictionary.HasFlag(Dictionary.CustomerID))
-                byCustomerID.Add(link.Data.CustomerID, link);
+            if (field.HasFlag(CustomerField.CustomerID))
+                dictCustomerID.Add(link.Data.CustomerID, link);
 
-            if (dictionary.HasFlag(Dictionary.CompanyName))
-                if (!byCompanyName.ContainsKey(link.Data.CompanyName))
-                    byCompanyName.Add(link.Data.CompanyName, new MyLinkedList<Link<Customer>>(link));
-                else byCompanyName[link.Data.CompanyName].Insert(link);
+            if (field.HasFlag(CustomerField.CompanyName))
+                if (!dictCompanyName.ContainsKey(link.Data.CompanyName))
+                    dictCompanyName.Add(link.Data.CompanyName, new MyLinkedList<Link<Customer>>(link));
+                else dictCompanyName[link.Data.CompanyName].Insert(link);
 
-            if (dictionary.HasFlag(Dictionary.ContactName))
-                if (!byContactName.ContainsKey(link.Data.ContactName))
-                    byContactName.Add(link.Data.ContactName, new MyLinkedList<Link<Customer>>(link));
-                else byContactName[link.Data.ContactName].Insert(link);
+            if (field.HasFlag(CustomerField.ContactName))
+                if (!dictContactName.ContainsKey(link.Data.ContactName))
+                    dictContactName.Add(link.Data.ContactName, new MyLinkedList<Link<Customer>>(link));
+                else dictContactName[link.Data.ContactName].Insert(link);
 
-            if (dictionary.HasFlag(Dictionary.Phone))
-                if (!byPhone.ContainsKey(link.Data.Phone))
-                    byPhone.Add(link.Data.Phone, new MyLinkedList<Link<Customer>>(link));
-                else byPhone[link.Data.Phone].Insert(link);
+            if (field.HasFlag(CustomerField.Phone))
+                if (!dictPhone.ContainsKey(link.Data.Phone))
+                    dictPhone.Add(link.Data.Phone, new MyLinkedList<Link<Customer>>(link));
+                else dictPhone[link.Data.Phone].Insert(link);
         }
 
-        void RemoveFromDictionaries(Link<Customer> link, Dictionary dictionary)
+        void RemoveFromDictionaries(Link<Customer> link, CustomerField field)
         {
-            if (dictionary.HasFlag(Dictionary.CustomerID))
+            if (field.HasFlag(CustomerField.CustomerID))
             {
-                byCustomerID.Remove(link.Data.CustomerID);
+                dictCustomerID.Remove(link.Data.CustomerID);
             }
 
-            if (dictionary.HasFlag(Dictionary.CompanyName))
+            if (field.HasFlag(CustomerField.CompanyName))
             {
-                byCompanyName[link.Data.CompanyName].Remove(link);
-                if (byCompanyName[link.Data.CompanyName].IsEmpty()) byCompanyName.Remove(link.Data.CompanyName);
+                dictCompanyName[link.Data.CompanyName].Remove(link);
+                if (dictCompanyName[link.Data.CompanyName].IsEmpty()) dictCompanyName.Remove(link.Data.CompanyName);
             }
 
-            if (dictionary.HasFlag(Dictionary.ContactName))
+            if (field.HasFlag(CustomerField.ContactName))
             {
-                byContactName[link.Data.ContactName].Remove(link);
-                if (byContactName[link.Data.ContactName].IsEmpty()) byContactName.Remove(link.Data.ContactName);
+                dictContactName[link.Data.ContactName].Remove(link);
+                if (dictContactName[link.Data.ContactName].IsEmpty()) dictContactName.Remove(link.Data.ContactName);
             }
 
-            if (dictionary.HasFlag(Dictionary.Phone))
+            if (field.HasFlag(CustomerField.Phone))
             {
-                byPhone[link.Data.Phone].Remove(link);
-                if (byPhone[link.Data.Phone].IsEmpty()) byPhone.Remove(link.Data.Phone);
+                dictPhone[link.Data.Phone].Remove(link);
+                if (dictPhone[link.Data.Phone].IsEmpty()) dictPhone.Remove(link.Data.Phone);
             }
         }
 
@@ -166,11 +166,11 @@ namespace Project_DataStructures
         {
             foreach (var customer in customersTable)
             {
-                if (byCustomerID.ContainsKey(customer.CustomerID))
+                if (dictCustomerID.ContainsKey(customer.CustomerID))
                     throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is already exist in the table.");
 
                 _customersTable.Insert(customer);
-                AddToDictionaries(_customersTable.Head, Dictionary.All);
+                AddToDictionaries(_customersTable.Head, CustomerField.All);
             }
         }
 
@@ -187,11 +187,11 @@ namespace Project_DataStructures
         //O(n) - Нужно исправить MyLinkedList чтобы получить O(1)
         public void Delete(string id)
         {
-            if (!byCustomerID.ContainsKey(id.ToString()))
+            if (!dictCustomerID.ContainsKey(id.ToString()))
                 throw new ArgumentException($"Customer with the ID: '{id}' does not exist.");
 
-            var link = byCustomerID[id];
-            RemoveFromDictionaries(link, Dictionary.All);
+            var link = dictCustomerID[id];
+            RemoveFromDictionaries(link, CustomerField.All);
             _customersTable.RemovePos(link);
         }
 
@@ -205,30 +205,30 @@ namespace Project_DataStructures
         {
             if (customer.CustomerID == "")
                 throw new ArgumentException("The customer ID is empty.");
-            if (!byCustomerID.ContainsKey(customer.CustomerID))
+            if (!dictCustomerID.ContainsKey(customer.CustomerID))
                 throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is not exist.");
 
-            var link = byCustomerID[customer.CustomerID];
+            var link = dictCustomerID[customer.CustomerID];
 
             if (link.Data.CompanyName != customer.CompanyName && customer.CompanyName != "")
             {
-                RemoveFromDictionaries(link, Dictionary.CompanyName);
+                RemoveFromDictionaries(link, CustomerField.CompanyName);
                 link.Data.CompanyName = customer.CompanyName;
-                AddToDictionaries(link, Dictionary.CompanyName);
+                AddToDictionaries(link, CustomerField.CompanyName);
             }
 
             if (link.Data.ContactName != customer.ContactName && customer.ContactName != "")
             {
-                RemoveFromDictionaries(link, Dictionary.ContactName);
+                RemoveFromDictionaries(link, CustomerField.ContactName);
                 link.Data.ContactName = customer.ContactName;
-                AddToDictionaries(link, Dictionary.ContactName);
+                AddToDictionaries(link, CustomerField.ContactName);
             }
 
             if (link.Data.Phone != customer.Phone && customer.Phone != "")
             {
-                RemoveFromDictionaries(link, Dictionary.Phone);
+                RemoveFromDictionaries(link, CustomerField.Phone);
                 link.Data.Phone = customer.Phone;
-                AddToDictionaries(link, Dictionary.Phone);
+                AddToDictionaries(link, CustomerField.Phone);
             }
         }
 

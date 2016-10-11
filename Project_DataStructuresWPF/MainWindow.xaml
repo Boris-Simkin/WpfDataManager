@@ -22,12 +22,7 @@
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
         <Button x:Name="clearBtn" Content="Clear" HorizontalAlignment="Left" Margin="510,29,0,0" VerticalAlignment="Top" Width="55" Click="clearBtn_Click"/>
         <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
-        <TabControl x:Name="tableTabControl" Margin="124,74,10,10" SelectionChanged="tableTabControl_SelectionChanged">
-            <TabItem Header="new table">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-        </TabControl>
+        <TabControl x:Name="tableTabControl" Margin="124,74,10,10" SelectionChanged="tableTabControl_SelectionChanged"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="595,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="31,296,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="button_Click"/>
     </Grid>
 </Window>
