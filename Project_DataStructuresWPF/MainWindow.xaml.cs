@@ -29,26 +29,22 @@ namespace Project_DataStructures
             CreateNewTable("new table");
         }
 
-        private string CurrentTabName()
-        {
-            TabItem ti = tableTabControl.SelectedItem as TabItem;
-            return ti.Header.ToString(); 
-        }
-
         private MyDB CurrentTable
         {
             get
             {
-                return tableList[CurrentTabName()];
+                TabItem ti = tableTabControl.SelectedItem as TabItem;
+                return tableList[ti.Header.ToString()];
             }
 
             set
             {
-                tableList[CurrentTabName()] = value;
+                TabItem ti = tableTabControl.SelectedItem as TabItem;
+                tableList[ti.Header.ToString()] = value;
             }
         }
 
-        public DataGrid currentDataGrid
+        private DataGrid currentDataGrid
         {
             get
             {
@@ -103,7 +99,8 @@ namespace Project_DataStructures
                     var newValue = (e.EditingElement as TextBox).Text;
 
                     DataGridCellInfo selected = dataGrid.SelectedCells[0];
-                    Customer customer = selected.Item as Customer;
+                    string selectedId = ((Customer)selected.Item).CustomerID;
+                    Customer customer = new Customer(selectedId, "", "", "");
 
                     if (bindingPath == "CompanyName")
                         customer.CompanyName = newValue;
@@ -114,10 +111,8 @@ namespace Project_DataStructures
                     if (bindingPath == "Phone")
                         customer.Phone = newValue;
 
-                    
-                    //tableList[CurrentTabName()].Update(customer);
                     CurrentTable.Update(customer);
-                    textBlock.Text = CurrentTable.ContainsCompanyName("Antonio Moreno Taquería").ToString();
+
                 }
 
             }
@@ -226,7 +221,7 @@ namespace Project_DataStructures
 
             //adding this table to tables dictionary 
             tableList.Add(tableName, newTable);
-            
+
             //subscribing the created DataGrid to the events
             newDG.SelectionChanged += dataGrid_SelectionChanged;
             newDG.CellEditEnding += dataGrid_CellEditEnding;
@@ -245,9 +240,20 @@ namespace Project_DataStructures
             newItem.IsSelected = true;
         }
 
-        private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
+            int count = currentDataGrid.SelectedItems.Count;
+            if (count > 0)
+            {
+                var items = currentDataGrid.SelectedItems;
+                CreateNewTable("selected table " + tableTabControl.Items.Count);
 
+                foreach (Customer item in items)
+                    CurrentTable.Insert(item);
+
+                RefreshGrid();
+
+            }
         }
 
     }

@@ -17,12 +17,12 @@
         <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="416,9,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
         <Button x:Name="insertBtn" Content="Insert" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Width="96" Click="insertBtn_Click"/>
         <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click"/>
-        <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="96"/>
+        <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="96" Click="selectBtn_Click"/>
         <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="96"/>
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
         <Button x:Name="clearBtn" Content="Clear" HorizontalAlignment="Left" Margin="510,29,0,0" VerticalAlignment="Top" Width="55" Click="clearBtn_Click"/>
         <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
-        <TabControl x:Name="tableTabControl" Margin="124,74,10,10" SelectionChanged="tableTabControl_SelectionChanged"/>
+        <TabControl x:Name="tableTabControl" Margin="124,74,10,10"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="595,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
     </Grid>
 </Window>

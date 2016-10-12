@@ -184,6 +184,11 @@ namespace Project_DataStructures
             Insert(new MyLinkedList<Customer>(customer));
         }
 
+        //public void Insert(List<Customer> list)
+        //{
+
+        //}
+
         //O(n) - Нужно исправить MyLinkedList чтобы получить O(1)
         public void Delete(string id)
         {
