@@ -5,24 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_DataStructures"
         mc:Ignorable="d"
-        Title="Data Structure Project" Height="360.833" Width="673.333" MinWidth="673" MinHeight="320">
+        Title="Data Structure Project" Height="276" Width="673.333" MinWidth="673" MinHeight="320">
     <Grid x:Name="Grid" Margin="0,0,3.667,5.333">
-        <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="124,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="124,9,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
-        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="220,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="220,9,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
-        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="320,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="320,9,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
-        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="420,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="416,9,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
-        <Button x:Name="insertBtn" Content="Insert" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Width="96" Click="insertBtn_Click"/>
-        <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click"/>
-        <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="96" Click="selectBtn_Click"/>
-        <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="96"/>
-        <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
-        <Button x:Name="clearBtn" Content="Clear" HorizontalAlignment="Left" Margin="510,29,0,0" VerticalAlignment="Top" Width="55" Click="clearBtn_Click"/>
-        <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
-        <TabControl x:Name="tableTabControl" Margin="124,74,10,10"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="595,25,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <Button x:Name="insertBtn" Content="Insert" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="96" Click="insertBtn_Click"/>
+        <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click"/>
+        <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Width="96" Click="selectBtn_Click"/>
+        <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="96"/>
+        <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
+        <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
+        <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334"/>
     </Grid>
 </Window>

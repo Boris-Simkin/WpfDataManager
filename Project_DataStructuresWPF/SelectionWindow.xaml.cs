@@ -28,5 +28,11 @@ namespace Project_DataStructures
         {
             this.Close();
         }
+
+        private void selectBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
+        }
     }
 }

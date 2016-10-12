@@ -63,13 +63,13 @@ namespace Project_DataStructures
             }
         }
 
-        private void ClearTextBoxes()
-        {
-            customerIdBox.Text = "";
-            companyNameBox.Text = "";
-            contactNameBox.Text = "";
-            phoneNumberBox.Text = "";
-        }
+        //private void ClearTextBoxes()
+        //{
+        //    customerIdBox.Text = "";
+        //    companyNameBox.Text = "";
+        //    contactNameBox.Text = "";
+        //    phoneNumberBox.Text = "";
+        //}
 
         private void RefreshGrid()
         {
@@ -123,22 +123,22 @@ namespace Project_DataStructures
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataGrid dataGrid = sender as DataGrid;
+            //DataGrid dataGrid = sender as DataGrid;
 
-            int count = dataGrid.SelectedItems.Count;
-            if (count == 1)
-            {
-                DataGridCellInfo selected = dataGrid.SelectedCells[0];
-                Customer customer = selected.Item as Customer;
-                customerIdBox.Text = customer.CustomerID;
-                companyNameBox.Text = customer.CompanyName;
-                contactNameBox.Text = customer.ContactName;
-                phoneNumberBox.Text = customer.Phone;
-            }
-            if (count > 1)
-            {
-                ClearTextBoxes();
-            }
+            //int count = dataGrid.SelectedItems.Count;
+            //if (count == 1)
+            //{
+            //    DataGridCellInfo selected = dataGrid.SelectedCells[0];
+            //    Customer customer = selected.Item as Customer;
+            //    customerIdBox.Text = customer.CustomerID;
+            //    companyNameBox.Text = customer.CompanyName;
+            //    contactNameBox.Text = customer.ContactName;
+            //    phoneNumberBox.Text = customer.Phone;
+            //}
+            //if (count > 1)
+            //{
+            //    ClearTextBoxes();
+            //}
         }
 
         private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -175,31 +175,31 @@ namespace Project_DataStructures
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (DeleteSelected())
-            {
-                ClearTextBoxes();
-                RefreshGrid();
-            }
+            //if (DeleteSelected())
+            //{
+            //    ClearTextBoxes();
+            //    RefreshGrid();
+            //}
         }
 
         private void insertBtn_Click(object sender, RoutedEventArgs e)
         {
 
-            if (!CurrentTable.ContainsCustomerID(customerIdBox.Text))
-            {
-                CurrentTable.Insert(new Customer(customerIdBox.Text, companyNameBox.Text, contactNameBox.Text,
-                    phoneNumberBox.Text));
-                RefreshGrid();
-            }
-            else
-                MessageBox.Show($"Customer with the ID: '{customerIdBox.Text}' is already exist in the table.",
-                    "ID in use", MessageBoxButton.OK, MessageBoxImage.Error);
+            //if (!CurrentTable.ContainsCustomerID(customerIdBox.Text))
+            //{
+            //    CurrentTable.Insert(new Customer(customerIdBox.Text, companyNameBox.Text, contactNameBox.Text,
+            //        phoneNumberBox.Text));
+            //    RefreshGrid();
+            //}
+            //else
+            //    MessageBox.Show($"Customer with the ID: '{customerIdBox.Text}' is already exist in the table.",
+            //        "ID in use", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private void clearBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ClearTextBoxes();
-        }
+        //private void clearBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ClearTextBoxes();
+        //}
 
         private void newTableBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -251,15 +251,18 @@ namespace Project_DataStructures
                 //if (new SelectionWindow().ShowDialog() == true)
                 if (selectionWindow.ShowDialog() == true)
                 {
+
+                    var items = currentDataGrid.SelectedItems;
+                    CreateNewTable("selected items " + ++selectionTabCount);
+
+                    foreach (Customer item in items)
+                        CurrentTable.Insert(item);
+
+                    RefreshGrid();
+
                 }
 
-                var items = currentDataGrid.SelectedItems;
-                CreateNewTable("selected items " + ++selectionTabCount);
 
-                foreach (Customer item in items)
-                    CurrentTable.Insert(item);
-
-                RefreshGrid();
 
             }
         }
