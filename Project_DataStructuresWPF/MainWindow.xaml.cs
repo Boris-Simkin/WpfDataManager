@@ -23,6 +23,9 @@ namespace Project_DataStructures
     {
         Dictionary<string, MyDB> tableList = new Dictionary<string, MyDB>();
 
+        //count tabs created by selection
+        static byte selectionTabCount = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -73,7 +76,6 @@ namespace Project_DataStructures
             currentDataGrid.ItemsSource = CurrentTable.ToList();
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
 
-            //currentDataGrid.Columns[0].Visibility = Visibility.Hidden;
         }
 
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
@@ -203,9 +205,7 @@ namespace Project_DataStructures
         {
             NewTableTab newTableTab = new NewTableTab();
             if (newTableTab.ShowDialog() == true)
-            {
                 CreateNewTable(newTableTab.TableName);
-            }
         }
 
         private void CreateNewTable(string tableName)
@@ -242,11 +242,19 @@ namespace Project_DataStructures
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
+
+
             int count = currentDataGrid.SelectedItems.Count;
             if (count > 0)
             {
+                SelectionWindow selectionWindow = new SelectionWindow();
+                //if (new SelectionWindow().ShowDialog() == true)
+                if (selectionWindow.ShowDialog() == true)
+                {
+                }
+
                 var items = currentDataGrid.SelectedItems;
-                CreateNewTable("selected table " + tableTabControl.Items.Count);
+                CreateNewTable("selected items " + ++selectionTabCount);
 
                 foreach (Customer item in items)
                     CurrentTable.Insert(item);
