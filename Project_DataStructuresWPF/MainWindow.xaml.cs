@@ -81,6 +81,8 @@ namespace Project_DataStructures
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
         {
             CurrentTable.Insert(LoadFromSQL.Load());
+            //enabling Delete, Update & Select buttons
+            SetButtonsActivation(true);
             RefreshGrid();
         }
 
@@ -203,8 +205,9 @@ namespace Project_DataStructures
 
         private void newTableBtn_Click(object sender, RoutedEventArgs e)
         {
+            //tableList
             var items = currentDataGrid.SelectedItems;
-            NewTableTab newTableTab = new NewTableTab(items.Count > 0);
+            NewTableTab newTableTab = new NewTableTab(items.Count > 0, new List<string>(tableList.Keys));
             if (newTableTab.ShowDialog() == true)
             {
 
@@ -215,6 +218,7 @@ namespace Project_DataStructures
                         CurrentTable.Insert(item);
 
                     RefreshGrid();
+                    SetButtonsActivation(true);
                 }
             }
 
@@ -250,6 +254,15 @@ namespace Project_DataStructures
             tableTabControl.Items.Add(newItem);
             //select the new tab
             newItem.IsSelected = true;
+            ////disabling Delete, Update & Select buttons
+            //SetButtonsActivation(true);
+        }
+
+        private void SetButtonsActivation(bool value)
+        {
+            deleteBtn.IsEnabled = value;
+            selectBtn.IsEnabled = value;
+            updateBtn.IsEnabled = value;
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
@@ -279,5 +292,9 @@ namespace Project_DataStructures
             }
         }
 
+        private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetButtonsActivation(currentDataGrid.Items.Count > 0);
+        }
     }
 }

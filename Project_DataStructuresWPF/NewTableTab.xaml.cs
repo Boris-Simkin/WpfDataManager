@@ -19,12 +19,15 @@ namespace Project_DataStructures
     /// </summary>
     public partial class NewTableTab : Window
     {
-        public NewTableTab(bool itemsCheckBox)
+        public NewTableTab(bool itemsCheckBox, List<string> keyList)
         {
             InitializeComponent();
             includeSelected.IsChecked = itemsCheckBox;
             includeSelected.IsEnabled = itemsCheckBox;
+            _keyList = keyList;
         }
+
+        private List<string> _keyList;
 
         public string TableName
         {
@@ -42,15 +45,19 @@ namespace Project_DataStructures
 
         private void cancleBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
 
         private void tableNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (tableNameTextBox.Text.Length > 0)
-                createBtn.IsEnabled = true;
+            bool nameSatisfy = !_keyList.Any(name => name == tableNameTextBox.Text);
+
+            if (!nameSatisfy)
+                errorMessageTextBlock.Visibility = Visibility.Visible;
             else
-                createBtn.IsEnabled = false;
+                errorMessageTextBlock.Visibility = Visibility.Hidden;
+
+            createBtn.IsEnabled = tableNameTextBox.Text.Length > 0 && nameSatisfy;
         }
 
         private void tableNameTextBox_KeyDown(object sender, KeyEventArgs e)
