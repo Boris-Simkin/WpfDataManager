@@ -203,9 +203,21 @@ namespace Project_DataStructures
 
         private void newTableBtn_Click(object sender, RoutedEventArgs e)
         {
-            NewTableTab newTableTab = new NewTableTab();
+            var items = currentDataGrid.SelectedItems;
+            NewTableTab newTableTab = new NewTableTab(items.Count > 0);
             if (newTableTab.ShowDialog() == true)
+            {
+
                 CreateNewTable(newTableTab.TableName);
+                if (newTableTab.includeSelected.IsChecked == true)
+                {
+                    foreach (Customer item in items)
+                        CurrentTable.Insert(item);
+
+                    RefreshGrid();
+                }
+            }
+
         }
 
         private void CreateNewTable(string tableName)

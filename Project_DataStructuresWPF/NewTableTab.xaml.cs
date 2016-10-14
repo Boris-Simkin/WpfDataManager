@@ -19,9 +19,11 @@ namespace Project_DataStructures
     /// </summary>
     public partial class NewTableTab : Window
     {
-        public NewTableTab()
+        public NewTableTab(bool itemsCheckBox)
         {
             InitializeComponent();
+            includeSelected.IsChecked = itemsCheckBox;
+            includeSelected.IsEnabled = itemsCheckBox;
         }
 
         public string TableName
