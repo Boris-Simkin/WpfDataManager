@@ -24,6 +24,7 @@ namespace Project_DataStructures
             InitializeComponent();
         }
 
+        #region Events
         private void cancleBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -34,5 +35,35 @@ namespace Project_DataStructures
             this.DialogResult = true;
             this.Close();
         }
+
+        private void switchRadioButtons(object sender, RoutedEventArgs e)
+        {
+            companyNameBox.IsEnabled ^= true;
+            contactNameBox.IsEnabled ^= true;
+            phoneNumberBox.IsEnabled ^= true;
+            customerIdBox.IsEnabled ^= true;
+            selectBtn.IsEnabled = satisfyFields();
+        }
+
+        private void FieldsTextChanged(object sender, TextChangedEventArgs e)
+        {
+            selectBtn.IsEnabled = satisfyFields();
+        }
+        #endregion
+
+        private bool satisfyFields()
+        {
+            return (companyNameBox.IsEnabled && (companyNameBox.Text != "" || contactNameBox.Text != "" || phoneNumberBox.Text != ""))
+                || (!companyNameBox.IsEnabled && customerIdBox.Text != "");
+        }
+
+        private void SwitchFieldsActivation()
+        {
+            companyNameBox.IsEnabled ^= true;
+            contactNameBox.IsEnabled ^= true;
+            phoneNumberBox.IsEnabled ^= true;
+            customerIdBox.IsEnabled ^= true;
+        }
+
     }
 }
