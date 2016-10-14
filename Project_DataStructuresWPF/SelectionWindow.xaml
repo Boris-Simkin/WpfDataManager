@@ -5,20 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_DataStructures"
         mc:Ignorable="d"
-        Title="Selection" Height="210.333" Width="432.667" ResizeMode="NoResize">
+        FocusManager.FocusedElement="{Binding ElementName=companyNameBox}"
+        Title="Select" Height="230.333" Width="472.5" ResizeMode="NoResize">
     <Grid>
-        <RadioButton x:Name="radioButton" Content="From selected items" HorizontalAlignment="Left" Margin="30,15,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="radioButton_Copy" Content="By filtering" HorizontalAlignment="Left" Margin="30,50,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="326,140,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
-        <Button x:Name="button" Content="Select" HorizontalAlignment="Left" Margin="30,140,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="34,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="34,80,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
-        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="130,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="130,80,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
-        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="230,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="230,80,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
-        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="330,102,-76.667,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-        <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="326,80,-77.667,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
+        <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="362,164,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
+        <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="25,164,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False"/>
+        <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="61,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" TextChanged="FieldsTextChanged"/>
+        <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="61,69,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
+        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="61,15,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
+        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="205,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="205,15,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
+        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="350,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="350,15,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
+        <RadioButton x:Name="fieldsRadioButton" Content="" HorizontalAlignment="Left" Margin="25,37,0,0" VerticalAlignment="Top" GroupName="Fields" IsChecked="True" Checked="switchRadioButtons"/>
+        <RadioButton x:Name="customerIDRadioButton" Content="" HorizontalAlignment="Left" Margin="25,90,0,0" VerticalAlignment="Top" GroupName="Fields" Checked="switchRadioButtons"/>
+        <CheckBox x:Name="selectedRowsCheckBox" Content="From selected rows" HorizontalAlignment="Left" Margin="25,125,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
