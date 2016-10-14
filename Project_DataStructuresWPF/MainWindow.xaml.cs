@@ -198,7 +198,7 @@ namespace Project_DataStructures
 
         //private void clearBtn_Click(object sender, RoutedEventArgs e)
         //{
-        //    ClearTextBoxes();
+        //    ClearTextBoxes(); 
         //}
 
         private void newTableBtn_Click(object sender, RoutedEventArgs e)
