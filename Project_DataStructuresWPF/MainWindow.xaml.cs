@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,16 @@ namespace Project_DataStructures
         {
             InitializeComponent();
             CreateNewTable("new table");
+        }
+
+        private void SetSelectedRowCount()
+        {
+            lblSelectedRowCount.Text = currentDataGrid.SelectedItems.Count.ToString();
+        }
+
+        private void SetRowCount()
+        {
+            lblRowCount.Text = currentDataGrid.Items.Count.ToString();
         }
 
         private MyDB CurrentTable
@@ -77,6 +88,7 @@ namespace Project_DataStructures
             //enabling Delete, Update & Select buttons
             SetButtonsActivation(true);
             RefreshGrid();
+            //SetRowCount();
         }
 
         #region dataGridEvents
@@ -118,7 +130,7 @@ namespace Project_DataStructures
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            SetSelectedRowCount();
         }
 
         private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -212,6 +224,9 @@ namespace Project_DataStructures
             newDG.CellEditEnding += dataGrid_CellEditEnding;
             newDG.PreviewKeyDown += dataGrid_PreviewKeyDown;
 
+            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(newDG.Items);
+            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+           
             //creating new TabItem
             TabItem newItem = new TabItem
             {
@@ -225,6 +240,12 @@ namespace Project_DataStructures
             newItem.IsSelected = true;
             ////disabling Delete, Update & Select buttons
             //SetButtonsActivation(true);
+        }
+
+        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            SetRowCount();
+            //throw new NotImplementedException();
         }
 
         private void SetButtonsActivation(bool value)
@@ -254,6 +275,8 @@ namespace Project_DataStructures
         private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SetButtonsActivation(currentDataGrid.Items.Count > 0);
+            SetSelectedRowCount();
+            SetRowCount();
         }
     }
 }

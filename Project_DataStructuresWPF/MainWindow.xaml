@@ -14,5 +14,11 @@
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
         <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
         <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334" SelectionChanged="tableTabControl_SelectionChanged"/>
+        <StatusBar x:Name="statusBar" Margin="124,0,10,10.334" Height="24" VerticalAlignment="Bottom">
+            <TextBlock><Run Text="Rows"/><Run Text=":"/></TextBlock>
+            <TextBlock x:Name="lblRowCount"/>
+            <TextBlock Text="Selected rows:"/>
+            <TextBlock x:Name="lblSelectedRowCount"/>
+        </StatusBar>
     </Grid>
 </Window>
