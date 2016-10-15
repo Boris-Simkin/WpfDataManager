@@ -19,9 +19,50 @@ namespace Project_DataStructures
     /// </summary>
     public partial class InsertWindow : Window
     {
-        public InsertWindow()
+        internal InsertWindow(MyDB db)
         {
             InitializeComponent();
+            _db = db;
+        }
+
+        MyDB _db;
+
+        private void InsertBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+            this.Close();
+        }
+
+        //private void FieldsTextChanged(object sender, TextChangedEventArgs e)
+        //{
+
+        //}
+
+        private void cancleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void fields_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return && InsertBtn.IsEnabled)
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
+        }
+
+        private void CustomerIDTextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool customerIdSatisfy = !_db.ContainsCustomerID(customerIdBox.Text);
+
+            if (!customerIdSatisfy)
+                errorMessageTextBlock.Visibility = Visibility.Visible;
+            else
+                errorMessageTextBlock.Visibility = Visibility.Hidden;
+
+
+            InsertBtn.IsEnabled = customerIdBox.Text.Length > 0 && customerIdSatisfy;
         }
     }
 }

@@ -57,13 +57,5 @@ namespace Project_DataStructures
                 || (!companyNameBox.IsEnabled && customerIdBox.Text != "");
         }
 
-        private void SwitchFieldsActivation()
-        {
-            companyNameBox.IsEnabled ^= true;
-            contactNameBox.IsEnabled ^= true;
-            phoneNumberBox.IsEnabled ^= true;
-            customerIdBox.IsEnabled ^= true;
-        }
-
     }
 }
