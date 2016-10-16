@@ -10,7 +10,7 @@
         <Button x:Name="insertBtn" Content="Insert" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="96" Click="insertBtn_Click"/>
         <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click" IsEnabled="False"/>
         <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Width="96" Click="selectBtn_Click" IsEnabled="False"/>
-        <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="96" IsEnabled="False"/>
+        <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="96" IsEnabled="False" Click="updateBtn_Click"/>
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
         <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334" SelectionChanged="tableTabControl_SelectionChanged">
             <TabItem Header = "+" MouseLeftButtonDown="addNewTab_Clicked" Focusable="False" MouseLeftButtonUp="addNewTab_Clicked" >

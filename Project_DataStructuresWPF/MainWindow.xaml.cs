@@ -22,6 +22,7 @@ namespace Project_DataStructures
     /// </summary>
     public partial class MainWindow : Window
     {
+        //All the tables are stored in this dictionary
         Dictionary<string, MyDB> tableList = new Dictionary<string, MyDB>();
 
         //count tabs created by selection
@@ -31,19 +32,10 @@ namespace Project_DataStructures
         {
             InitializeComponent();
             CreateNewTable("new table");
-
         }
 
-        private void SetSelectedRowCount()
-        {
-            lblSelectedRowCount.Text = currentDataGrid.SelectedItems.Count.ToString();
-        }
-
-        private void SetRowCount()
-        {
-            lblRowCount.Text = currentDataGrid.Items.Count.ToString();
-        }
-
+        #region Properties
+        //Current MyDB table property
         private MyDB CurrentTable
         {
             get
@@ -74,27 +66,107 @@ namespace Project_DataStructures
                 dg = value;
             }
         }
+        #endregion
 
+        //Statusbar selected row counter
+        private void SetSelectedRowCount()
+        {
+            lblSelectedRowCount.Text = currentDataGrid.SelectedItems.Count.ToString();
+        }
+
+        //Statusbar total row counter
+        private void SetRowCount()
+        {
+            lblRowCount.Text = currentDataGrid.Items.Count.ToString();
+        }
 
         private void RefreshGrid()
         {
             currentDataGrid.ItemsSource = CurrentTable.ToList();
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
-
         }
 
-        private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
+        private bool DeleteSelected()
         {
-            CurrentTable.Insert(LoadFromSQL.Load());
-            //enabling Delete, Update & Select buttons
-            SetButtonsActivation(true);
-            RefreshGrid();
-            //SetRowCount();
+            int count = currentDataGrid.SelectedItems.Count;
+
+            MessageBoxResult result = MessageBoxResult.None;
+            //Showing confirmation window only if selected items > 1
+            if (count > 1)
+            {
+                result = MessageBox.Show(
+                $"About to delete {count} selected rows.\n\nProceed?",
+                "Delete selection",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No);
+            }
+
+            if (result != MessageBoxResult.No)
+            {
+                //Delete selected items from the table
+                var items = currentDataGrid.SelectedItems;
+                CurrentTable.MultipleDelete(items);
+                return true;
+            }
+
+            return false;
         }
 
-        #region dataGridEvents
+        //The method creates new ItemTab, DataGrid and a new MyDB table
+        private void CreateNewTable(string tableName)
+        {
+            //creating new DataGrid
+            DataGrid newDG = new DataGrid();
+
+            //creating new MyDB table
+            MyDB newTable = new MyDB();
+
+            //adding this table to the created DataGrid
+            newDG.ItemsSource = newTable.ToList();
+
+            //adding this table to tables dictionary 
+            tableList.Add(tableName, newTable);
+
+            //subscribing the created DataGrid to the events
+            newDG.SelectionChanged += dataGrid_SelectionChanged;
+            newDG.CellEditEnding += dataGrid_CellEditEnding;
+            newDG.PreviewKeyDown += dataGrid_PreviewKeyDown;
+
+            //creating new TabItem
+            TabItem newItem = new TabItem
+            {
+                //the content of the TabItem is the created DataGrid
+                Content = newDG,
+                Header = tableName
+            };
+            //adding the TabItem to the tabControl
+            tableTabControl.Items.Insert(tableTabControl.Items.Count - 1, newItem);
+            //select the new tab
+            newItem.IsSelected = true;
+            //Activate the delete button if there is more than 1 tab
+            deleteTableBtn.IsEnabled = tableList.Count > 1;
+        }
+
+        private void SetButtonsActivation(bool value)
+        {
+            deleteBtn.IsEnabled = value;
+            selectBtn.IsEnabled = value;
+            updateBtn.IsEnabled = value;
+        }
+
+        private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //Enabling Delete, Update &Select buttons in case the current table is not empty
+            SetButtonsActivation(currentDataGrid.Items.Count > 0);
+            SetSelectedRowCount();
+            SetRowCount();
+        }
+
+        #region DataGrid events
         private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            //Get the dataGrid that called the event
             DataGrid dataGrid = sender as DataGrid;
 
             if (e.EditAction == DataGridEditAction.Commit)
@@ -136,54 +208,28 @@ namespace Project_DataStructures
 
         private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            //Delete selected items if 'enter' key was pressed
             if (e.Key == Key.Delete)
                 e.Handled = !DeleteSelected();
         }
         #endregion
 
-        private bool DeleteSelected()
+        #region Buttons click events
+        private void insertBtn_Click(object sender, RoutedEventArgs e)
         {
-            int count = currentDataGrid.SelectedItems.Count;
-            MessageBoxResult result = MessageBoxResult.None;
-
-            if (count > 1)
+            InsertWindow insertWindow = new InsertWindow(CurrentTable);
+            //Showing the insert window dialog
+            if (insertWindow.ShowDialog() == true)
             {
-                result = MessageBox.Show(
-                $"About to delete {count} selected rows.\n\nProceed?",
-                "Delete selection",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No);
+                Customer customer = new Customer(insertWindow.customerIdBox.Text, insertWindow.companyNameBox.Text,
+                    insertWindow.contactNameBox.Text, insertWindow.phoneNumberBox.Text);
+                //Insert the user input data
+                CurrentTable.Insert(customer);
+                RefreshGrid();
+                //Enabling Delete, Update &Select buttons
+                SetButtonsActivation(true);
+                SetRowCount();
             }
-
-            if (result != MessageBoxResult.No)
-            {
-                var items = currentDataGrid.SelectedItems;
-                CurrentTable.MultipleDelete(items);
-                return true;
-            }
-
-            return false;
-        }
-
-        private void addNewTab_Clicked(object sender, MouseButtonEventArgs e)
-        {
-            var items = currentDataGrid.SelectedItems;
-            NewTableTab newTableTab = new NewTableTab(items.Count > 0, new List<string>(tableList.Keys));
-            if (newTableTab.ShowDialog() == true)
-            {
-
-                CreateNewTable(newTableTab.TableName);
-                if (newTableTab.includeSelected.IsChecked == true)
-                {
-                    foreach (Customer item in items)
-                        CurrentTable.Insert(item);
-
-                    RefreshGrid();
-                    SetButtonsActivation(true);
-                }
-            }
-
         }
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
@@ -191,79 +237,17 @@ namespace Project_DataStructures
 
         }
 
-        private void insertBtn_Click(object sender, RoutedEventArgs e)
-        {
-            InsertWindow insertWindow = new InsertWindow(CurrentTable);
-
-            if (insertWindow.ShowDialog() == true)
-            {
-                Customer customer = new Customer(insertWindow.customerIdBox.Text, insertWindow.companyNameBox.Text,
-                    insertWindow.contactNameBox.Text, insertWindow.phoneNumberBox.Text);
-                CurrentTable.Insert(customer);
-                RefreshGrid();
-                SetButtonsActivation(true);
-            }
-        }
-
-        private void CreateNewTable(string tableName)
-        {
-            //creating new DataGrid
-            DataGrid newDG = new DataGrid();
-
-            //creating new MyDB table
-            MyDB newTable = new MyDB();
-
-            //adding this table to the created DataGrid
-            newDG.ItemsSource = newTable.ToList();
-
-            //adding this table to tables dictionary 
-            tableList.Add(tableName, newTable);
-
-            //subscribing the created DataGrid to the events
-            newDG.SelectionChanged += dataGrid_SelectionChanged;
-            newDG.CellEditEnding += dataGrid_CellEditEnding;
-            newDG.PreviewKeyDown += dataGrid_PreviewKeyDown;
-
-            CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(newDG.Items);
-            ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-
-            //creating new TabItem
-            TabItem newItem = new TabItem
-            {
-                //the content of the TabItem is the created DataGrid
-                Content = newDG,
-                Header = tableName
-            };
-            //adding the TabItem to the tabControl
-            //tableTabControl.Items.Add(newItem);
-            tableTabControl.Items.Insert(tableTabControl.Items.Count - 1, newItem);
-            //select the new tab
-            newItem.IsSelected = true;
-            //tableTabControl.SelectedIndex--;
-
-            deleteTableBtn.IsEnabled = tableList.Count > 1;
-        }
-
-        private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            SetRowCount();
-        }
-
-        private void SetButtonsActivation(bool value)
-        {
-            deleteBtn.IsEnabled = value;
-            selectBtn.IsEnabled = value;
-            updateBtn.IsEnabled = value;
-        }
-
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            //int count = currentDataGrid.SelectedItems.Count;
             SelectionWindow selectionWindow = new SelectionWindow();
-            //if (new SelectionWindow().ShowDialog() == true)
+            //Invoke select window dialog
             if (selectionWindow.ShowDialog() == true)
             {
-                var items = currentDataGrid.SelectedItems;
+                //var items = currentDataGrid.SelectedItems;
+                Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
+                    selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
+
+                var items = CurrentTable.Select(customer);
                 CreateNewTable("selected items " + ++selectionTabCount);
 
                 foreach (Customer item in items)
@@ -273,11 +257,39 @@ namespace Project_DataStructures
             }
         }
 
-        private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-            SetButtonsActivation(currentDataGrid.Items.Count > 0);
-            SetSelectedRowCount();
+
+        }
+
+        private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentTable.Insert(LoadFromSQL.Load());
+            //Enabling Delete, Update & Select buttons
+            SetButtonsActivation(true);
+            RefreshGrid();
             SetRowCount();
+        }
+
+        private void addNewTab_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            var items = currentDataGrid.SelectedItems;
+            NewTableTab newTableTab = new NewTableTab(items.Count > 0, new List<string>(tableList.Keys));
+            //Showing the dialog window for new table tab creation
+            if (newTableTab.ShowDialog() == true)
+            {
+                //Create new tab & table
+                CreateNewTable(newTableTab.TableName);
+                if (newTableTab.includeSelected.IsChecked == true)
+                {
+                    //Copying the selected items from the last tab
+                    foreach (Customer item in items)
+                        CurrentTable.Insert(item);
+                    RefreshGrid();
+                    //Enabling Delete, Update &Select buttons
+                    SetButtonsActivation(true);
+                }
+            }
         }
 
         private void deleteTableBtn_Click(object sender, RoutedEventArgs e)
@@ -285,7 +297,7 @@ namespace Project_DataStructures
             var currentTabItem = (TabItem)tableTabControl.SelectedItem;
             string tableName = currentTabItem.Header.ToString();
 
-            //Confirmation window
+            //Confirmation window dialog
             MessageBoxResult result = MessageBoxResult.None;
             result = MessageBox.Show(
                 $"About to delete the table '{tableName}'.\n\nProceed?",
@@ -296,21 +308,14 @@ namespace Project_DataStructures
 
             if (result != MessageBoxResult.No)
             {
+                //unsubscribe the datagrid from its events
                 currentDataGrid.SelectionChanged -= dataGrid_SelectionChanged;
                 currentDataGrid.CellEditEnding -= dataGrid_CellEditEnding;
                 currentDataGrid.PreviewKeyDown -= dataGrid_PreviewKeyDown;
 
-                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(currentDataGrid.Items);
-                //((INotifyCollectionChanged)myCollectionView).CollectionChanged -= new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-
-
                 //removing the database
                 tableList.Remove(tableName);
 
-                //removing the datagrid
-                //tableTabControl.SelectedItem = 
-
-           
                 var itemToRemove = currentTabItem;
 
                 //Change the selected tab position
@@ -318,14 +323,16 @@ namespace Project_DataStructures
                     tableTabControl.SelectedIndex--;
                 else
                     tableTabControl.SelectedIndex++;
-                
+
                 //removing the tab item
                 tableTabControl.Items.Remove(itemToRemove);
-            
+
                 //Activate the delete button if there is more than 1 tab
                 deleteTableBtn.IsEnabled = tableList.Count > 1;
             }
 
         }
+
+        #endregion
     }
 }
