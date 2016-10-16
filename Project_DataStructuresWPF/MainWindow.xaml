@@ -14,7 +14,6 @@
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
         <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334" SelectionChanged="tableTabControl_SelectionChanged">
             <TabItem Header = "+" MouseLeftButtonDown="addNewTab_Clicked" Focusable="False" MouseLeftButtonUp="addNewTab_Clicked" >
-                
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>

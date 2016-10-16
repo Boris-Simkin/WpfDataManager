@@ -61,10 +61,12 @@ namespace Project_DataStructures
         {
             MyDB newDB = new MyDB();
 
-            newDB.SelectBy(customer.CustomerID, CustomerField.CustomerID);
-            newDB.SelectBy(customer.CompanyName, CustomerField.CompanyName);
-            newDB.SelectBy(customer.ContactName, CustomerField.ContactName);
-            newDB.SelectBy(customer.Phone, CustomerField.Phone);
+
+            newDB = SelectBy(customer.CustomerID, CustomerField.CustomerID);
+            newDB = SelectBy(customer.CompanyName, CustomerField.CompanyName);
+
+            newDB = SelectBy(customer.ContactName, CustomerField.ContactName);
+            //newDB = SelectBy(customer.Phone, CustomerField.Phone);
 
             return newDB;
         }
@@ -111,7 +113,6 @@ namespace Project_DataStructures
                         result.Insert(line);
                     }
                 }
-
             return result;
         }
 
