@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Project_DataStructures
 {
-    public class MyLinkedList<T> : IEnumerable<T>
+    class MyLinkedList<T> : IEnumerable<T>
     {
         private Link<T> _head;
 

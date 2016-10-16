@@ -31,6 +31,7 @@ namespace Project_DataStructures
         {
             InitializeComponent();
             CreateNewTable("new table");
+
         }
 
         private void SetSelectedRowCount()
@@ -165,6 +166,26 @@ namespace Project_DataStructures
             return false;
         }
 
+        private void addNewTab_Clicked(object sender, MouseButtonEventArgs e)
+        {
+            var items = currentDataGrid.SelectedItems;
+            NewTableTab newTableTab = new NewTableTab(items.Count > 0, new List<string>(tableList.Keys));
+            if (newTableTab.ShowDialog() == true)
+            {
+
+                CreateNewTable(newTableTab.TableName);
+                if (newTableTab.includeSelected.IsChecked == true)
+                {
+                    foreach (Customer item in items)
+                        CurrentTable.Insert(item);
+
+                    RefreshGrid();
+                    SetButtonsActivation(true);
+                }
+            }
+
+        }
+
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
 
@@ -182,27 +203,6 @@ namespace Project_DataStructures
                 RefreshGrid();
                 SetButtonsActivation(true);
             }
-        }
-
-        private void newTableBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //tableList
-            var items = currentDataGrid.SelectedItems;
-            NewTableTab newTableTab = new NewTableTab(items.Count > 0, new List<string>(tableList.Keys));
-            if (newTableTab.ShowDialog() == true)
-            {
-
-                CreateNewTable(newTableTab.TableName);
-                if (newTableTab.includeSelected.IsChecked == true)
-                {
-                    foreach (Customer item in items)
-                        CurrentTable.Insert(item);
-
-                    RefreshGrid();
-                    SetButtonsActivation(true);
-                }
-            }
-
         }
 
         private void CreateNewTable(string tableName)
@@ -226,7 +226,7 @@ namespace Project_DataStructures
 
             CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(newDG.Items);
             ((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-           
+
             //creating new TabItem
             TabItem newItem = new TabItem
             {
@@ -235,17 +235,18 @@ namespace Project_DataStructures
                 Header = tableName
             };
             //adding the TabItem to the tabControl
-            tableTabControl.Items.Add(newItem);
+            //tableTabControl.Items.Add(newItem);
+            tableTabControl.Items.Insert(tableTabControl.Items.Count - 1, newItem);
             //select the new tab
             newItem.IsSelected = true;
-            ////disabling Delete, Update & Select buttons
-            //SetButtonsActivation(true);
+            //tableTabControl.SelectedIndex--;
+
+            deleteTableBtn.IsEnabled = tableList.Count > 1;
         }
 
         private void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             SetRowCount();
-            //throw new NotImplementedException();
         }
 
         private void SetButtonsActivation(bool value)
@@ -277,6 +278,54 @@ namespace Project_DataStructures
             SetButtonsActivation(currentDataGrid.Items.Count > 0);
             SetSelectedRowCount();
             SetRowCount();
+        }
+
+        private void deleteTableBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var currentTabItem = (TabItem)tableTabControl.SelectedItem;
+            string tableName = currentTabItem.Header.ToString();
+
+            //Confirmation window
+            MessageBoxResult result = MessageBoxResult.None;
+            result = MessageBox.Show(
+                $"About to delete the table '{tableName}'.\n\nProceed?",
+                "Delete table",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No);
+
+            if (result != MessageBoxResult.No)
+            {
+                currentDataGrid.SelectionChanged -= dataGrid_SelectionChanged;
+                currentDataGrid.CellEditEnding -= dataGrid_CellEditEnding;
+                currentDataGrid.PreviewKeyDown -= dataGrid_PreviewKeyDown;
+
+                //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(currentDataGrid.Items);
+                //((INotifyCollectionChanged)myCollectionView).CollectionChanged -= new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
+
+
+                //removing the database
+                tableList.Remove(tableName);
+
+                //removing the datagrid
+                //tableTabControl.SelectedItem = 
+
+           
+                var itemToRemove = currentTabItem;
+
+                //Change the selected tab position
+                if (tableTabControl.SelectedIndex != 0)
+                    tableTabControl.SelectedIndex--;
+                else
+                    tableTabControl.SelectedIndex++;
+                
+                //removing the tab item
+                tableTabControl.Items.Remove(itemToRemove);
+            
+                //Activate the delete button if there is more than 1 tab
+                deleteTableBtn.IsEnabled = tableList.Count > 1;
+            }
+
         }
     }
 }

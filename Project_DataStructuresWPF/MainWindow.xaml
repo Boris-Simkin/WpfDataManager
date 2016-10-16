@@ -12,13 +12,21 @@
         <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Width="96" Click="selectBtn_Click" IsEnabled="False"/>
         <Button x:Name="updateBtn" Content="Update" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Top" Width="96" IsEnabled="False"/>
         <Button x:Name="loadFromSQLBtn" Content="Load from SQL" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="96" Click="loadFromSQLBtn_Click"/>
-        <Button x:Name="newTableBtn" Content="New table" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="96" Click="newTableBtn_Click"/>
-        <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334" SelectionChanged="tableTabControl_SelectionChanged"/>
+        <TabControl x:Name="tableTabControl" Margin="124,10,10,10.334" SelectionChanged="tableTabControl_SelectionChanged">
+            <TabItem Header = "+" MouseLeftButtonDown="addNewTab_Clicked" Focusable="False" MouseLeftButtonUp="addNewTab_Clicked" >
+                
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
         <StatusBar x:Name="statusBar" Margin="124,0,10,10.334" Height="24" VerticalAlignment="Bottom">
             <TextBlock><Run Text="Rows"/><Run Text=":"/></TextBlock>
             <TextBlock x:Name="lblRowCount"/>
             <TextBlock Text="Selected rows:"/>
             <TextBlock x:Name="lblSelectedRowCount"/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Button x:Name="deleteTableBtn" Content="Delete table" Width="75" HorizontalAlignment="Right" HorizontalContentAlignment="Center" IsEnabled="False" Click="deleteTableBtn_Click"/>
+            </StatusBarItem>
         </StatusBar>
+
     </Grid>
 </Window>
