@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Project_DataStructures
-{
+{ 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -77,7 +77,8 @@ namespace Project_DataStructures
         //Statusbar total row counter
         private void SetRowCount()
         {
-            lblRowCount.Text = currentDataGrid.Items.Count.ToString();
+            // lblRowCount.Text = currentDataGrid.Items.Count.ToString();
+            lblRowCount.Text = CurrentTable.Count.ToString();
         }
 
         private void RefreshGrid()
@@ -118,21 +119,20 @@ namespace Project_DataStructures
         {
             //creating new DataGrid
             DataGrid newDG = new DataGrid();
-
+            //Adding a background to the DataGrid
+            newDG.Background = new ImageBrush(imageBackground.Source);
+            //Set row color to transparent
+            newDG.RowBackground = new SolidColorBrush(Colors.Transparent);
             //creating new MyDB table
             MyDB newTable = new MyDB();
-
             //adding this table to the created DataGrid
             newDG.ItemsSource = newTable.ToList();
-
             //adding this table to tables dictionary 
             tableList.Add(tableName, newTable);
-
             //subscribing the created DataGrid to the events
             newDG.SelectionChanged += dataGrid_SelectionChanged;
             newDG.CellEditEnding += dataGrid_CellEditEnding;
             newDG.PreviewKeyDown += dataGrid_PreviewKeyDown;
-
             //creating new TabItem
             TabItem newItem = new TabItem
             {
@@ -248,12 +248,22 @@ namespace Project_DataStructures
                     selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
 
                 var items = CurrentTable.Select(customer);
-                CreateNewTable("selected items " + ++selectionTabCount);
 
-                foreach (Customer item in items)
-                    CurrentTable.Insert(item);
+                if (!items.IsEmpty())
+                {
+                    CreateNewTable("selected items " + ++selectionTabCount);
 
-                RefreshGrid();
+                    foreach (Customer item in items)
+                        CurrentTable.Insert(item);
+
+                    //Enabling Delete, Update &Select buttons
+                    SetButtonsActivation(true);
+
+                    RefreshGrid();
+                }
+                else
+                    MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             }
         }
 
@@ -265,7 +275,7 @@ namespace Project_DataStructures
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
         {
             CurrentTable.Insert(LoadFromSQL.Load());
-            //Enabling Delete, Update & Select buttons
+            //Enabling Delete, Update & Select buttons 
             SetButtonsActivation(true);
             RefreshGrid();
             SetRowCount();

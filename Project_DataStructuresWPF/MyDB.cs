@@ -32,9 +32,16 @@ namespace Project_DataStructures
 
         public MyDB() { }
 
+
+
         public MyDB(MyLinkedList<Customer> customersTable)
         {
             Insert(customersTable);
+        }
+
+        public bool IsEmpty()
+        {
+            return _customersTable.IsEmpty();
         }
 
         public bool ContainsCustomerID(string id)
@@ -57,16 +64,43 @@ namespace Project_DataStructures
             return dictPhone.ContainsKey(phone);
         }
 
+        public int Count
+        {
+            get { return _customersTable.Count; }
+        }
+
         public MyDB Select(Customer customer)
         {
             MyDB newDB = new MyDB();
 
 
             newDB = SelectBy(customer.CustomerID, CustomerField.CustomerID);
-            newDB = SelectBy(customer.CompanyName, CustomerField.CompanyName);
+            if (!newDB.IsEmpty())
+                return newDB;
 
-            newDB = SelectBy(customer.ContactName, CustomerField.ContactName);
-            //newDB = SelectBy(customer.Phone, CustomerField.Phone);
+            if (customer.CompanyName != "")
+            {
+                newDB = SelectBy(customer.CompanyName, CustomerField.CompanyName);
+                if (newDB.IsEmpty()) return newDB;
+            }
+
+            if (customer.ContactName != "")
+            {
+                if (!newDB.IsEmpty())
+                    newDB = newDB.SelectBy(customer.ContactName, CustomerField.ContactName);
+                else
+                    newDB = SelectBy(customer.ContactName, CustomerField.ContactName);
+                if (newDB.IsEmpty()) return newDB;
+            }
+
+            if (customer.Phone != "")
+            {
+                if (!newDB.IsEmpty())
+                    newDB = newDB.SelectBy(customer.Phone, CustomerField.Phone);
+                else
+                    newDB = SelectBy(customer.Phone, CustomerField.Phone);
+                if (newDB.IsEmpty()) return newDB;
+            }
 
             return newDB;
         }
@@ -184,11 +218,6 @@ namespace Project_DataStructures
         {
             Insert(new MyLinkedList<Customer>(customer));
         }
-
-        //public void Insert(List<Customer> list)
-        //{
-
-        //}
 
         //O(n) - Нужно исправить MyLinkedList чтобы получить O(1)
         public void Delete(string id)

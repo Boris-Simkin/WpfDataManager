@@ -51,11 +51,19 @@ namespace Project_DataStructures
         }
         #endregion
 
+        private void fields_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return && selectBtn.IsEnabled)
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
+        }
+
         private bool satisfyFields()
         {
             return (companyNameBox.IsEnabled && (companyNameBox.Text != "" || contactNameBox.Text != "" || phoneNumberBox.Text != ""))
                 || (!companyNameBox.IsEnabled && customerIdBox.Text != "");
         }
-
     }
 }

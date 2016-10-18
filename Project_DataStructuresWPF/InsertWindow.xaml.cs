@@ -33,11 +33,6 @@ namespace Project_DataStructures
             this.Close();
         }
 
-        //private void FieldsTextChanged(object sender, TextChangedEventArgs e)
-        //{
-
-        //}
-
         private void cancleBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

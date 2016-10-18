@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project_DataStructures"
         mc:Ignorable="d"
-        Title="Data Structure Project" Height="276" Width="673.333" MinWidth="673" MinHeight="320">
+        Title="Data Structure Project" Height="421" Width="673.333" MinWidth="673" MinHeight="320">
     <Grid x:Name="Grid" Margin="0,0,3.667,5.333">
         <Button x:Name="insertBtn" Content="Insert" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="96" Click="insertBtn_Click"/>
         <Button x:Name="deleteBtn" Content="Delete" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Width="96" Click="deleteBtn_Click" IsEnabled="False"/>
@@ -26,6 +26,7 @@
                 <Button x:Name="deleteTableBtn" Content="Delete table" Width="75" HorizontalAlignment="Right" HorizontalContentAlignment="Center" IsEnabled="False" Click="deleteTableBtn_Click"/>
             </StatusBarItem>
         </StatusBar>
+        <Image x:Name="imageBackground" HorizontalAlignment="Left" Height="35" Margin="30,190,0,0" VerticalAlignment="Top" Width="35" Source="Assets/background.jpg" Visibility="Hidden"/>
 
     </Grid>
 </Window>

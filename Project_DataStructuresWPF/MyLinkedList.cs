@@ -35,6 +35,7 @@ namespace Project_DataStructures
         {
             Link<T> link = new Link<T>(data, _head);
             _head = link;
+            Count++;
         }
         /// <summary>
         /// Inserts a record after the elment p in the list
@@ -51,6 +52,7 @@ namespace Project_DataStructures
             {
                 Link<T> link = new Link<T>(data, p.Next);
                 p.Next = link;
+                Count++;
             }
         }
 
@@ -65,6 +67,7 @@ namespace Project_DataStructures
             {
                 res = _head;
                 _head = _head.Next;
+                Count--;
 
             }
             return res.Data;
@@ -97,6 +100,7 @@ namespace Project_DataStructures
                 if (link != null)
                 {
                     preLink.Next = link.Next;
+                    Count--;
                     return true;
                 }
             }
@@ -116,11 +120,12 @@ namespace Project_DataStructures
                 if (p.Next == null)
                     throw new ArgumentException("Cannot remove the only element");
                 _head = _head.Next;
+                Count--;
                 return res.Data;
             }
-            
             Link<T> pr = Prev(p);
             pr.Next = p.Next;
+            Count--;
             return res.Data;
         }
 
@@ -128,7 +133,7 @@ namespace Project_DataStructures
         {
             Link<T> pr = this._head;
             if (p == _head)
-                 throw new ArgumentException("The specified link is Head and has not a previus element");
+                throw new ArgumentException("The specified link is Head and has not a previus element");
             while (pr.Next != null && pr.Next != p)
             {
                 pr = pr.Next;
@@ -138,16 +143,21 @@ namespace Project_DataStructures
             return pr;
         }
 
-        public int Count()
+        //public int Count()
+        //{
+        //    Link<T> p = _head;
+        //    int cnt = 0;
+        //    while (p != null)
+        //    {
+        //        cnt++;
+        //        p = p.Next;
+        //    }
+        //    return cnt;
+        //}
+
+        public int Count
         {
-            Link<T> p = _head;
-            int cnt = 0;
-            while (p != null)
-            {
-                cnt++;
-                p = p.Next;
-            }
-            return cnt;
+            get; private set;
         }
 
         public override string ToString()

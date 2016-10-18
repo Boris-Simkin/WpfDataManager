@@ -10,13 +10,13 @@
     <Grid>
         <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="362,164,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
         <Button x:Name="selectBtn" Content="Select" HorizontalAlignment="Left" Margin="25,164,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="selectBtn_Click"/>
-        <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="61,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" TextChanged="FieldsTextChanged"/>
+        <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="61,91,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="61,69,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
-        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="61,15,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
-        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="205,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="205,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="205,15,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
-        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="350,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" IsEnabled="False" TextChanged="FieldsTextChanged"/>
+        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="350,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="350,15,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
         <RadioButton x:Name="fieldsRadioButton" Content="" HorizontalAlignment="Left" Margin="25,37,0,0" VerticalAlignment="Top" GroupName="Fields" IsChecked="True" Checked="switchRadioButtons"/>
         <RadioButton x:Name="customerIDRadioButton" Content="" HorizontalAlignment="Left" Margin="25,90,0,0" VerticalAlignment="Top" GroupName="Fields" Checked="switchRadioButtons"/>
