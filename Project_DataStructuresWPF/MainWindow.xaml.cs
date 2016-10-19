@@ -121,7 +121,6 @@ namespace Project_DataStructures
                      
                             //Enabling Delete, Update &Select buttons
                             SetButtonsActivation(true);
-
                             
                             break;
                         case SelectMode.Update:
@@ -143,11 +142,12 @@ namespace Project_DataStructures
         private bool DeleteSelected()
         {
             int count = currentDataGrid.SelectedItems.Count;
+            bool res = false;
 
             MessageBoxResult result = MessageBoxResult.None;
             //Showing confirmation window only if selected items > 1
             if (count > 1)
-            {
+            { 
                 result = MessageBox.Show(
                 $"About to delete {count} selected rows.\n\nProceed?",
                 "Delete selection",
@@ -161,10 +161,14 @@ namespace Project_DataStructures
                 //Delete selected items from the table
                 var items = currentDataGrid.SelectedItems;
                 CurrentTable.MultipleDelete(items);
-                return true;
+                res = true;
             }
 
-            return false;
+            //Enabling Delete, Update &Select buttons in case the current table is not empty
+            SetButtonsActivation(CurrentTable.Count > 0);
+
+            SetRowCount();
+            return res;
         }
 
         //The method creates new ItemTab, DataGrid and a new MyDB table
@@ -211,10 +215,13 @@ namespace Project_DataStructures
 
         private void tableTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Enabling Delete, Update &Select buttons in case the current table is not empty
-            SetButtonsActivation(currentDataGrid.Items.Count > 0);
-            SetSelectedRowCount();
-            SetRowCount();
+            if (e.Source is TabControl)
+            {
+                //Enabling Delete, Update &Select buttons in case the current table is not empty
+                SetButtonsActivation(currentDataGrid.Items.Count > 0);
+                SetSelectedRowCount();
+                SetRowCount();
+            }
         }
 
         #region DataGrid events
@@ -260,9 +267,10 @@ namespace Project_DataStructures
 
         private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            //Delete selected items if 'enter' key was pressed
+            //Delete selected items if 'delete' key was pressed
             if (e.Key == Key.Delete)
                 e.Handled = !DeleteSelected();
+
         }
         #endregion
 
@@ -371,5 +379,6 @@ namespace Project_DataStructures
         }
 
         #endregion
+
     }
 }

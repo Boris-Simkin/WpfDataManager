@@ -197,16 +197,19 @@ namespace Project_DataStructures
             }
         }
 
-        public void Insert(MyLinkedList<Customer> customersTable)
+        public bool Insert(MyLinkedList<Customer> customersTable)
         {
+            bool notFound = false;
             foreach (var customer in customersTable)
             {
-                if (dictCustomerID.ContainsKey(customer.CustomerID))
-                    throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is already exist in the table.");
-
-                _customersTable.Insert(customer);
-                AddToDictionaries(_customersTable.Head, CustomerField.All);
+                if (!dictCustomerID.ContainsKey(customer.CustomerID))
+                {
+                    _customersTable.Insert(customer);
+                    AddToDictionaries(_customersTable.Head, CustomerField.All);
+                }
+                else notFound = true;
             }
+            return notFound;
         }
 
         public void Insert(MyDB db)

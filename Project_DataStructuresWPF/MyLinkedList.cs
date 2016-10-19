@@ -117,11 +117,18 @@ namespace Project_DataStructures
             Link<T> res = p;
             if (p == _head)
             {
-                if (p.Next == null)
-                    throw new ArgumentException("Cannot remove the only element");
-                _head = _head.Next;
+                if (p.Next != null)
+                {
+                    //throw new ArgumentException("Cannot remove the only element");
+                    _head = _head.Next;
+                }
+                else
+                {
+                    _head = null;
+                }
                 Count--;
                 return res.Data;
+
             }
             Link<T> pr = Prev(p);
             pr.Next = p.Next;
