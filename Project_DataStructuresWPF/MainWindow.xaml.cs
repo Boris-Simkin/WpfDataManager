@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Project_DataStructures
-{ 
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -27,6 +27,13 @@ namespace Project_DataStructures
 
         //count tabs created by selection
         static byte selectionTabCount = 0;
+
+        enum SelectMode
+        {
+            Select,
+            Delete,
+            Update
+        }
 
         public MainWindow()
         {
@@ -87,6 +94,52 @@ namespace Project_DataStructures
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
         }
 
+        private void Select(SelectMode selectMode)
+        {
+            SelectionWindow selectionWindow = new SelectionWindow(selectMode.ToString());
+            //Invoke select window dialog
+            if (selectionWindow.ShowDialog() == true)
+            {
+                //var items = currentDataGrid.SelectedItems;
+                Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
+                    selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
+
+                var items = CurrentTable.Select(customer);
+
+                if (!items.IsEmpty())
+                {
+                    switch (selectMode)
+                    {
+                        case SelectMode.Delete:
+                            CurrentTable.MultipleDelete(items);
+                            break;
+
+                        case SelectMode.Select:
+                            CreateNewTable("selected items " + ++selectionTabCount);
+
+                            CurrentTable.Insert(items);
+                     
+                            //Enabling Delete, Update &Select buttons
+                            SetButtonsActivation(true);
+
+                            
+                            break;
+                        case SelectMode.Update:
+                            CurrentTable.Update(items);
+
+                            break;
+                         default:
+                            break;
+                    }
+
+                    RefreshGrid();
+
+                }
+                else
+                    MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         private bool DeleteSelected()
         {
             int count = currentDataGrid.SelectedItems.Count;
@@ -119,6 +172,7 @@ namespace Project_DataStructures
         {
             //creating new DataGrid
             DataGrid newDG = new DataGrid();
+            newDG.CanUserReorderColumns = false;
             //Adding a background to the DataGrid
             newDG.Background = new ImageBrush(imageBackground.Source);
             //Set row color to transparent
@@ -175,30 +229,28 @@ namespace Project_DataStructures
 
                 if (column != null)
                 {
-                    //the name of the column
-                    var bindingPath = (column.Binding as Binding).Path.Path;
-                    //the value of the edited element
                     var newValue = (e.EditingElement as TextBox).Text;
 
                     DataGridCellInfo selected = dataGrid.SelectedCells[0];
                     string selectedId = ((Customer)selected.Item).CustomerID;
                     Customer customer = new Customer(selectedId, "", "", "");
 
-                    if (bindingPath == "CompanyName")
+                    //Disabling the accesss to the CustomerID key field
+                    if (column.Header.Equals("CustomerID"))
+                        column.IsReadOnly = true;
+
+                    if (column.Header.Equals("CompanyName"))
                         customer.CompanyName = newValue;
 
-                    if (bindingPath == "ContactName")
+                    if (column.Header.Equals("ContactName"))
                         customer.ContactName = newValue;
 
-                    if (bindingPath == "Phone")
+                    if (column.Header.Equals("Phone"))
                         customer.Phone = newValue;
 
                     CurrentTable.Update(customer);
-
                 }
-
             }
-
         }
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -234,42 +286,17 @@ namespace Project_DataStructures
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Select(SelectMode.Delete);
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectionWindow selectionWindow = new SelectionWindow();
-            //Invoke select window dialog
-            if (selectionWindow.ShowDialog() == true)
-            {
-                //var items = currentDataGrid.SelectedItems;
-                Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
-                    selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
-
-                var items = CurrentTable.Select(customer);
-
-                if (!items.IsEmpty())
-                {
-                    CreateNewTable("selected items " + ++selectionTabCount);
-
-                    foreach (Customer item in items)
-                        CurrentTable.Insert(item);
-
-                    //Enabling Delete, Update &Select buttons
-                    SetButtonsActivation(true);
-
-                    RefreshGrid();
-                }
-                else
-                    MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-            }
+            Select(SelectMode.Select);
         }
 
         private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Select(SelectMode.Update);
         }
 
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)

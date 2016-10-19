@@ -235,6 +235,24 @@ namespace Project_DataStructures
             foreach (var item in db)
                 Delete(((Customer)item).CustomerID);
         }
+        
+        public void Update(MyDB db)
+        {
+            Update(db._customersTable);
+        }
+
+        public void Update(MyLinkedList<Customer> customersTable)
+        {
+            foreach (var customer in customersTable)
+            {
+                //if (dictCustomerID.ContainsKey(customer.CustomerID))
+                //    throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is already exist in the table.");
+
+                Update(customer);
+                //_customersTable.Insert(customer);
+                // AddToDictionaries(_customersTable.Head, CustomerField.All);
+            }
+        }
 
         public void Update(Customer customer)
         {

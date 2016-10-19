@@ -19,9 +19,12 @@ namespace Project_DataStructures
     /// </summary>
     public partial class SelectionWindow : Window
     {
-        public SelectionWindow()
+
+        public SelectionWindow(string operationName)
         {
             InitializeComponent();
+            submitBtn.Content = operationName;
+            window.Title = operationName;
         }
 
         #region Events
@@ -42,18 +45,18 @@ namespace Project_DataStructures
             contactNameBox.IsEnabled ^= true;
             phoneNumberBox.IsEnabled ^= true;
             customerIdBox.IsEnabled ^= true;
-            selectBtn.IsEnabled = satisfyFields();
+            submitBtn.IsEnabled = satisfyFields();
         }
 
         private void FieldsTextChanged(object sender, TextChangedEventArgs e)
         {
-            selectBtn.IsEnabled = satisfyFields();
+            submitBtn.IsEnabled = satisfyFields();
         }
         #endregion
 
         private void fields_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && selectBtn.IsEnabled)
+            if (e.Key == Key.Return && submitBtn.IsEnabled)
             {
                 this.DialogResult = true;
                 this.Close();
