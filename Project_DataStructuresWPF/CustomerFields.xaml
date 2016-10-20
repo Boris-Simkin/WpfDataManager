@@ -1,0 +1,20 @@
+﻿<Window x:Class="Project_DataStructures.CustomerFields"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_DataStructures"
+        mc:Ignorable="d"
+        Title="CustomerFields" Height="116" Width="388.333">
+    <Grid x:Name="grid">
+        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="-2,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
+        <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="-2,45,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
+        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="142,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
+        <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="142,45,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
+        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="286,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
+        <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="286,45,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
+        <Separator Margin="0,13,0.333,0" Height="15" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock" Margin="160,0,154.333,0" TextWrapping="Wrap" Text="New values" VerticalAlignment="Top" Height="28" Width="67"/>
+
+    </Grid>
+</Window>

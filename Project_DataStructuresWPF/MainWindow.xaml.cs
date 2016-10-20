@@ -294,11 +294,10 @@ namespace Project_DataStructures
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            //Select(SelectMode.Delete);
-            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Delete);
-            if (selectionWindow.ShowDialog() == true)
+            DeleteWindow deleteWindow = new DeleteWindow(CurrentTable);
+            if (deleteWindow.ShowDialog() == true)
             {
-                CurrentTable.MultipleDelete(selectionWindow.ResultDB);
+                CurrentTable.MultipleDelete(deleteWindow.ResultDB);
                 //Enabling Delete, Update &Select buttons in case the current table is not empty
                 SetButtonsActivation(CurrentTable.Count > 0);
                 SetRowCount();
@@ -308,7 +307,7 @@ namespace Project_DataStructures
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Select);
+            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable);
             if (selectionWindow.ShowDialog() == true)
             {
 
@@ -325,8 +324,8 @@ namespace Project_DataStructures
 
         private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Delete);
-            if (selectionWindow.ShowDialog() == true)
+            UpdateWindow updateWindow = new UpdateWindow(CurrentTable);
+            if (updateWindow.ShowDialog() == true)
             {
                 RefreshGrid();
             }

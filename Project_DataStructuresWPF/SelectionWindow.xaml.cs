@@ -24,18 +24,11 @@ namespace Project_DataStructures
 
         internal MyDB ResultDB { get; private set; }
 
-        public enum SelectMode
-        {
-            Select,
-            Delete,
-            Update
-        }
-
-        internal SelectionWindow(MyDB db, SelectMode selectMode)
+        internal SelectionWindow(MyDB db)
         {
             InitializeComponent();
-            submitBtn.Content = selectMode.ToString();
-            window.Title = selectMode.ToString();
+            submitBtn.Content = "Select";
+            window.Title = "Select";
             _db = db;
         }
 
