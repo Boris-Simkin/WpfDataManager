@@ -9,11 +9,13 @@ namespace Project_DataStructures
     {
         public T Data { get; set; }
         public Link<T> Next { get; set; }
+        public Link<T> Prev { get; set; }
 
-        public Link(T data, Link<T> next)
+        public Link(T data, Link<T> next, Link<T> prev)
         {
             Data = data;
             Next = next;
+            Prev = prev;
         }
 
         public override string ToString()

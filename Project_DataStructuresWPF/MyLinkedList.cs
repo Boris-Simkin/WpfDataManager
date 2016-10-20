@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-//using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -26,6 +25,13 @@ namespace Project_DataStructures
             Insert(data);
         }
 
+        /// <summary>
+        /// Returns whether the list is empty
+        /// </summary>
+        public bool IsEmpty()
+        {
+            return _head == null;
+        }
 
         /// <summary>
         /// Inserts a record at the head of the list
@@ -33,8 +39,13 @@ namespace Project_DataStructures
         /// <param name="data"></param>
         public void Insert(T data)
         {
-            Link<T> link = new Link<T>(data, _head);
+            Link<T> link = new Link<T>(data, _head, null);
+
+            if (_head != null)
+                _head.Prev = link;
+
             _head = link;
+
             Count++;
         }
         /// <summary>
@@ -45,15 +56,22 @@ namespace Project_DataStructures
         public void Insert(T data, Link<T> p)
         {
             if (p == null)
-            {
                 Insert(data);
-            }
             else
             {
-                Link<T> link = new Link<T>(data, p.Next);
+                Link<T> link = new Link<T>(data, p.Next, null);
+
+                if (p.Next != null)
+                    p.Next.Prev = link;
+
                 p.Next = link;
                 Count++;
             }
+        }
+
+        public void RemoveAllData(T data)
+        {
+            while (Remove(data)) ;
         }
 
         /// <summary>
@@ -67,17 +85,17 @@ namespace Project_DataStructures
             {
                 res = _head;
                 _head = _head.Next;
+                if (_head != null)
+                    _head.Prev = null;
                 Count--;
-
             }
             return res.Data;
         }
 
-        public bool IsEmpty()
-        {
-            return _head == null;
-        }
-
+        /// <summary>
+        /// Removes the node that contains the specific data
+        /// and return true if the data was found
+        /// </summary>
         public bool Remove(T data)
         {
             if (_head != null)
@@ -85,21 +103,22 @@ namespace Project_DataStructures
                 if (_head.Data.Equals(data))
                 {
                     _head = _head.Next;
+                    if (_head != null)
+                        _head.Prev = null;
+                    Count--;
                     return true;
                 }
 
                 Link<T> link = _head.Next;
-                Link<T> preLink = _head;
 
                 while (link != null && !link.Data.Equals(data))
-                {
-                    preLink = link;
                     link = link.Next;
-                }
 
                 if (link != null)
                 {
-                    preLink.Next = link.Next;
+                    link.Prev.Next = link.Next;
+                    if (link.Next != null)
+                        link.Next.Prev = link.Prev;
                     Count--;
                     return true;
                 }
@@ -107,61 +126,41 @@ namespace Project_DataStructures
             return false;
         }
 
-        public void RemoveAllData(T data)
-        {
-            while (Remove(data));
-        }
-
+        /// <summary>
+        /// Removes the node by link
+        /// and return its data
+        /// </summary>
         public T RemovePos(Link<T> p)
         {
             Link<T> res = p;
+            if (IsEmpty())
+                throw new ArgumentException("The list is empty.");
+
             if (p == _head)
             {
                 if (p.Next != null)
                 {
-                    //throw new ArgumentException("Cannot remove the only element");
                     _head = _head.Next;
+                    _head.Prev = null;
                 }
                 else
-                {
                     _head = null;
-                }
+
                 Count--;
                 return res.Data;
-
             }
-            Link<T> pr = Prev(p);
-            pr.Next = p.Next;
+
+            p.Prev.Next = p.Next;
+            if (p.Next != null)
+                p.Next.Prev = p.Prev;
+
             Count--;
             return res.Data;
         }
 
-        public Link<T> Prev(Link<T> p)
-        {
-            Link<T> pr = this._head;
-            if (p == _head)
-                throw new ArgumentException("The specified link is Head and has not a previus element");
-            while (pr.Next != null && pr.Next != p)
-            {
-                pr = pr.Next;
-            }
-            if (pr.Next == null && pr != p)
-                throw new KeyNotFoundException("The specified link does not exist in the linked list");
-            return pr;
-        }
-
-        //public int Count()
-        //{
-        //    Link<T> p = _head;
-        //    int cnt = 0;
-        //    while (p != null)
-        //    {
-        //        cnt++;
-        //        p = p.Next;
-        //    }
-        //    return cnt;
-        //}
-
+        /// <summary>
+        /// returns the number of nodes
+        /// </summary>
         public int Count
         {
             get; private set;
@@ -169,10 +168,8 @@ namespace Project_DataStructures
 
         public override string ToString()
         {
-            if (_head == null)
-            {
+            if (IsEmpty())
                 return "List is empty!!";
-            }
 
             StringBuilder sb = new StringBuilder();
 
