@@ -20,11 +20,23 @@ namespace Project_DataStructures
     public partial class SelectionWindow : Window
     {
 
-        public SelectionWindow(string operationName)
+        MyDB _db; 
+
+        internal MyDB ResultDB { get; private set; }
+
+        public enum SelectMode
+        {
+            Select,
+            Delete,
+            Update
+        }
+
+        internal SelectionWindow(MyDB db, SelectMode selectMode)
         {
             InitializeComponent();
-            submitBtn.Content = operationName;
-            window.Title = operationName;
+            submitBtn.Content = selectMode.ToString();
+            window.Title = selectMode.ToString();
+            _db = db;
         }
 
         #region Events
@@ -45,14 +57,44 @@ namespace Project_DataStructures
             contactNameBox.IsEnabled ^= true;
             phoneNumberBox.IsEnabled ^= true;
             customerIdBox.IsEnabled ^= true;
-            submitBtn.IsEnabled = satisfyFields();
+            submitBtn.IsEnabled = SatisfyFields();
+            PrintMessage();
+        }
+
+        private bool DetailsFieldsEmpty()
+        {
+            return companyNameBox.Text == "" && contactNameBox.Text == "" && phoneNumberBox.Text == "";
         }
 
         private void FieldsTextChanged(object sender, TextChangedEventArgs e)
         {
-            submitBtn.IsEnabled = satisfyFields();
+            submitBtn.IsEnabled = SatisfyFields();
+            PrintMessage();
+
         }
         #endregion
+
+        private void PrintMessage()
+        {
+            if (ResultDB == null) return;
+
+            if (!SelectedNotEmpty())
+                messageTextBlock.Text = "";
+
+            if (!submitBtn.IsEnabled)
+            {
+                if (ResultDB.IsEmpty() && SelectedNotEmpty())
+                    messageTextBlock.Text = "No results containing all your search terms were found.";
+            }
+            else
+            {
+                if (ResultDB.Count == 1)
+                    messageTextBlock.Text = "One row was found.";
+                else
+                    messageTextBlock.Text = $"{ResultDB.Count} rows were found.";
+            }
+
+        }
 
         private void fields_KeyDown(object sender, KeyEventArgs e)
         {
@@ -63,10 +105,27 @@ namespace Project_DataStructures
             }
         }
 
-        private bool satisfyFields()
+        private bool SelectedNotEmpty()
         {
-            return (companyNameBox.IsEnabled && (companyNameBox.Text != "" || contactNameBox.Text != "" || phoneNumberBox.Text != ""))
-                || (!companyNameBox.IsEnabled && customerIdBox.Text != "");
+            return ((companyNameBox.IsEnabled && !DetailsFieldsEmpty())
+              || (!companyNameBox.IsEnabled && customerIdBox.Text != ""));
+
+        }
+
+        private bool SatisfyFields()
+        {
+            if (SelectedNotEmpty())
+            {
+                Customer userInput;
+                if (companyNameBox.IsEnabled)
+                    userInput = new Customer("", companyNameBox.Text, contactNameBox.Text, phoneNumberBox.Text);
+                else
+                    userInput = new Customer(customerIdBox.Text, "", "", "");
+
+                ResultDB = _db.Select(userInput);
+                return !ResultDB.IsEmpty();
+            }
+            return false;
         }
     }
 }

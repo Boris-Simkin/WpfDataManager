@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:Project_DataStructures"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=companyNameBox}"
-        Title="Select" Height="230.333" Width="472.5" ResizeMode="NoResize">
+        Title="Select" Height="220.333" Width="472.5" ResizeMode="NoResize">
     <Grid>
-        <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="362,164,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
-        <Button x:Name="submitBtn" Content="Select" HorizontalAlignment="Left" Margin="25,164,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="selectBtn_Click"/>
-         <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
+        <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="362,150,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
+        <Button x:Name="submitBtn" Content="Select" HorizontalAlignment="Left" Margin="25,150,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="selectBtn_Click"/>
+        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="61,15,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
         <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="205,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="205,15,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
@@ -20,7 +20,7 @@
         <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="61,69,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
         <RadioButton x:Name="fieldsRadioButton" Content="" HorizontalAlignment="Left" Margin="25,37,0,0" VerticalAlignment="Top" GroupName="Fields" IsChecked="True" Checked="switchRadioButtons"/>
         <RadioButton x:Name="customerIDRadioButton" Content="" HorizontalAlignment="Left" Margin="25,90,0,0" VerticalAlignment="Top" GroupName="Fields" Checked="switchRadioButtons"/>
-        <CheckBox x:Name="selectedRowsCheckBox" Content="From selected rows" HorizontalAlignment="Left" Margin="25,125,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="messageTextBlock" HorizontalAlignment="Left" Margin="104,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

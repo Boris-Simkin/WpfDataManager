@@ -28,12 +28,12 @@ namespace Project_DataStructures
         //count tabs created by selection
         static byte selectionTabCount = 0;
 
-        enum SelectMode
-        {
-            Select,
-            Delete,
-            Update
-        }
+        //enum SelectMode
+        //{
+        //    Select,
+        //    Delete,
+        //    Update
+        //}
 
         public MainWindow()
         {
@@ -94,50 +94,50 @@ namespace Project_DataStructures
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
         }
 
-        private void Select(SelectMode selectMode)
-        {
-            SelectionWindow selectionWindow = new SelectionWindow(selectMode.ToString());
-            //Invoke select window dialog
-            if (selectionWindow.ShowDialog() == true)
-            {
-                //var items = currentDataGrid.SelectedItems;
-                Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
-                    selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
+        //private void Select(SelectMode selectMode)
+        //{
+        //    SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, selectMode.ToString());
+        //    //Invoke select window dialog
+        //    if (selectionWindow.ShowDialog() == true)
+        //    {
+        //        //var items = currentDataGrid.SelectedItems;
+        //        Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
+        //            selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
 
-                var items = CurrentTable.Select(customer);
+        //        var items = CurrentTable.Select(customer);
 
-                if (!items.IsEmpty())
-                {
-                    switch (selectMode)
-                    {
-                        case SelectMode.Delete:
-                            CurrentTable.MultipleDelete(items);
-                            break;
+        //        if (!items.IsEmpty())
+        //        {
+        //            switch (selectMode)
+        //            {
+        //                case SelectMode.Delete:
+        //                    CurrentTable.MultipleDelete(items);
+        //                    break;
 
-                        case SelectMode.Select:
-                            CreateNewTable("selected items " + ++selectionTabCount);
+        //                case SelectMode.Select:
+        //                    CreateNewTable("selected items " + ++selectionTabCount);
 
-                            CurrentTable.Insert(items);
-                     
-                            //Enabling Delete, Update &Select buttons
-                            SetButtonsActivation(true);
-                            
-                            break;
-                        case SelectMode.Update:
-                            CurrentTable.Update(items);
+        //                    CurrentTable.Insert(items);
 
-                            break;
-                         default:
-                            break;
-                    }
+        //                    //Enabling Delete, Update &Select buttons
+        //                    SetButtonsActivation(true);
 
-                    RefreshGrid();
+        //                    break;
+        //                case SelectMode.Update:
+        //                    CurrentTable.Update(items);
 
-                }
-                else
-                    MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
+        //                    break;
+        //                 default:
+        //                    break;
+        //            }
+
+        //            RefreshGrid();
+
+        //        }
+        //        else
+        //            MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //    }
+        //}
 
         private bool DeleteSelected()
         {
@@ -147,7 +147,7 @@ namespace Project_DataStructures
             MessageBoxResult result = MessageBoxResult.None;
             //Showing confirmation window only if selected items > 1
             if (count > 1)
-            { 
+            {
                 result = MessageBox.Show(
                 $"About to delete {count} selected rows.\n\nProceed?",
                 "Delete selection",
@@ -294,17 +294,42 @@ namespace Project_DataStructures
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            Select(SelectMode.Delete);
+            //Select(SelectMode.Delete);
+            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Delete);
+            if (selectionWindow.ShowDialog() == true)
+            {
+                CurrentTable.MultipleDelete(selectionWindow.ResultDB);
+                //Enabling Delete, Update &Select buttons in case the current table is not empty
+                SetButtonsActivation(CurrentTable.Count > 0);
+                SetRowCount();
+                RefreshGrid();
+            }
         }
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            Select(SelectMode.Select);
+            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Select);
+            if (selectionWindow.ShowDialog() == true)
+            {
+
+
+                CreateNewTable("selected items " + ++selectionTabCount);
+
+                CurrentTable.Insert(selectionWindow.ResultDB);
+
+                //Enabling Delete, Update &Select buttons
+                SetButtonsActivation(true);
+                RefreshGrid();
+            }
         }
 
         private void updateBtn_Click(object sender, RoutedEventArgs e)
         {
-            Select(SelectMode.Update);
+            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, SelectionWindow.SelectMode.Delete);
+            if (selectionWindow.ShowDialog() == true)
+            {
+                RefreshGrid();
+            }
         }
 
         private void loadFromSQLBtn_Click(object sender, RoutedEventArgs e)
