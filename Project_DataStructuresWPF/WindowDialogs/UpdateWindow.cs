@@ -11,8 +11,6 @@ namespace Project_DataStructures
     {
         CustomerFields customerFields = new CustomerFields();
 
-       // internal MyDB DBForUpdate { get; private set; }
-
         internal UpdateWindow(MyDB db) : base(db)
         {
             submitBtn.Content = "Update";
@@ -21,7 +19,6 @@ namespace Project_DataStructures
 
             customerFields.TextChanged += FieldsTextChanged;
             customerFields.EnterPressed += CustomerFields_EnterPressed;
-
             submitBtn.Click += SubmitBtn_Click;
 
             stackPanel.Children.Add(customerFields.grid);

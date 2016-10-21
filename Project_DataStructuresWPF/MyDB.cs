@@ -32,8 +32,6 @@ namespace Project_DataStructures
 
         public MyDB() { }
 
-
-
         public MyDB(MyLinkedList<Customer> customersTable)
         {
             Insert(customersTable);
@@ -174,9 +172,7 @@ namespace Project_DataStructures
         void RemoveFromDictionaries(Link<Customer> link, CustomerField field)
         {
             if (field.HasFlag(CustomerField.CustomerID))
-            {
                 dictCustomerID.Remove(link.Data.CustomerID);
-            }
 
             if (field.HasFlag(CustomerField.CompanyName))
             {
@@ -219,7 +215,6 @@ namespace Project_DataStructures
 
         public void Insert(Customer customer)
         {
-
             Insert(new MyLinkedList<Customer>(new Customer(customer.CustomerID, customer.CompanyName,
                         customer.ContactName, customer.Phone)));
         }
@@ -248,14 +243,7 @@ namespace Project_DataStructures
         public void Update(MyLinkedList<Customer> customersTable)
         {
             foreach (var customer in customersTable)
-            {
-                //if (dictCustomerID.ContainsKey(customer.CustomerID))
-                //    throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is already exist in the table.");
-
                 UpdateByID(customer);
-                //_customersTable.Insert(customer);
-                // AddToDictionaries(_customersTable.Head, CustomerField.All);
-            }
         }
 
         public void UpdateByID(Customer customer)
