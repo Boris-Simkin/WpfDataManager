@@ -9,21 +9,58 @@ namespace Project_DataStructures
 {
     public class UpdateWindow : SelectionWindow
     {
+        CustomerFields customerFields = new CustomerFields();
+
         internal UpdateWindow(MyDB db) : base(db)
         {
             submitBtn.Content = "Update";
             window.Title = "Update";
-
             window.Height += 100;
 
-            CustomerFields customerFields = new CustomerFields();
+            customerFields.companyNameBox.TextChanged += FieldsTextChanged;
+            customerFields.contactNameBox.TextChanged += FieldsTextChanged;
+            customerFields.phoneNumberBox.TextChanged += FieldsTextChanged;
 
-            customerFields.companyNameBox.IsEnabled = true;
-            customerFields.contactNameBox.IsEnabled = true;
-            customerFields.phoneNumberBox.IsEnabled = true;
-            //stackPanel.Children.Add(SaveButton);
+            submitBtn.Click += SubmitBtn_Click;
+
             stackPanel.Children.Add(customerFields.grid);
-            //stackPanel.
         }
+
+        private void SubmitBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            foreach (var customer in ResultDB)
+            {
+                if (customerFields.companyNameBox.Text != "")
+                    customer.CompanyName = customerFields.companyNameBox.Text;
+                if (customerFields.contactNameBox.Text != "")
+                    customer.ContactName = customerFields.contactNameBox.Text;
+                if (customerFields.phoneNumberBox.Text != "")
+                    customer.Phone = customerFields.phoneNumberBox.Text;
+            }
+        }
+
+        private void FieldsTextChanged(object sender, TextChangedEventArgs e)
+        {
+            submitBtn.IsEnabled = !customerFields.DetailsFieldsEmpty() && QuerySubmitted;
+        }
+
+        private bool querySubmitted;
+
+        protected override bool QuerySubmitted
+        {
+            get
+            {
+                return querySubmitted;
+            }
+            set
+            {
+                querySubmitted = value;
+                customerFields.companyNameBox.IsEnabled = value;
+                customerFields.contactNameBox.IsEnabled = value;
+                customerFields.phoneNumberBox.IsEnabled = value;
+                submitBtn.IsEnabled = !customerFields.DetailsFieldsEmpty() && QuerySubmitted;
+            }
+        }
+
     }
 }

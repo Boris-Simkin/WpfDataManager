@@ -25,6 +25,11 @@ namespace Project_DataStructures
             this.RemoveLogicalChild(grid);
         }
 
+        public bool DetailsFieldsEmpty()
+        {
+            return companyNameBox.Text == "" && contactNameBox.Text == "" && phoneNumberBox.Text == "";
+        }
+
         private void fields_KeyDown(object sender, KeyEventArgs e)
         {
 

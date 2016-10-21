@@ -9,7 +9,7 @@
         Title="Select" Height="220.333" Width="472.5" ResizeMode="NoResize">
     <Grid x:Name="grid">
         <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="362,0,0,22" Width="75" Click="cancleBtn_Click" IsCancel="True" Height="20" VerticalAlignment="Bottom"/>
-        <Button x:Name="submitBtn" Content="Select" HorizontalAlignment="Left" Margin="25,0,0,22" Width="75" IsEnabled="False" Click="selectBtn_Click" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="submitBtn" Content="Select" HorizontalAlignment="Left" Margin="25,0,0,22" Width="75" IsEnabled="False" Click="submitBtn_Click" Height="20" VerticalAlignment="Bottom"/>
         <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="61,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="61,15,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
         <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="205,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" IsEnabled="False" TextChanged="FieldsTextChanged" KeyDown="fields_KeyDown"/>

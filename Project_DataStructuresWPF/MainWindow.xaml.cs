@@ -94,51 +94,6 @@ namespace Project_DataStructures
             CollectionViewSource.GetDefaultView(currentDataGrid.ItemsSource).Refresh();
         }
 
-        //private void Select(SelectMode selectMode)
-        //{
-        //    SelectionWindow selectionWindow = new SelectionWindow(CurrentTable, selectMode.ToString());
-        //    //Invoke select window dialog
-        //    if (selectionWindow.ShowDialog() == true)
-        //    {
-        //        //var items = currentDataGrid.SelectedItems;
-        //        Customer customer = new Customer(selectionWindow.customerIdBox.Text, selectionWindow.companyNameBox.Text,
-        //            selectionWindow.contactNameBox.Text, selectionWindow.phoneNumberBox.Text);
-
-        //        var items = CurrentTable.Select(customer);
-
-        //        if (!items.IsEmpty())
-        //        {
-        //            switch (selectMode)
-        //            {
-        //                case SelectMode.Delete:
-        //                    CurrentTable.MultipleDelete(items);
-        //                    break;
-
-        //                case SelectMode.Select:
-        //                    CreateNewTable("selected items " + ++selectionTabCount);
-
-        //                    CurrentTable.Insert(items);
-
-        //                    //Enabling Delete, Update &Select buttons
-        //                    SetButtonsActivation(true);
-
-        //                    break;
-        //                case SelectMode.Update:
-        //                    CurrentTable.Update(items);
-
-        //                    break;
-        //                 default:
-        //                    break;
-        //            }
-
-        //            RefreshGrid();
-
-        //        }
-        //        else
-        //            MessageBox.Show("No results containing all your search terms were found.", "Nothing found", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    }
-        //}
-
         private bool DeleteSelected()
         {
             int count = currentDataGrid.SelectedItems.Count;
@@ -255,7 +210,7 @@ namespace Project_DataStructures
                     if (column.Header.Equals("Phone"))
                         customer.Phone = newValue;
 
-                    CurrentTable.Update(customer);
+                    CurrentTable.UpdateByID(customer);
                 }
             }
         }
@@ -310,8 +265,6 @@ namespace Project_DataStructures
             SelectionWindow selectionWindow = new SelectionWindow(CurrentTable);
             if (selectionWindow.ShowDialog() == true)
             {
-
-
                 CreateNewTable("selected items " + ++selectionTabCount);
 
                 CurrentTable.Insert(selectionWindow.ResultDB);
@@ -327,6 +280,7 @@ namespace Project_DataStructures
             UpdateWindow updateWindow = new UpdateWindow(CurrentTable);
             if (updateWindow.ShowDialog() == true)
             {
+                CurrentTable.Update(updateWindow.ResultDB);
                 RefreshGrid();
             }
         }
@@ -399,10 +353,7 @@ namespace Project_DataStructures
                 //Activate the delete button if there is more than 1 tab
                 deleteTableBtn.IsEnabled = tableList.Count > 1;
             }
-
         }
-
         #endregion
-
     }
 }

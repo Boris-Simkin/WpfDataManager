@@ -219,10 +219,11 @@ namespace Project_DataStructures
 
         public void Insert(Customer customer)
         {
-            Insert(new MyLinkedList<Customer>(customer));
+
+            Insert(new MyLinkedList<Customer>(new Customer(customer.CustomerID, customer.CompanyName,
+                        customer.ContactName, customer.Phone)));
         }
 
-        //O(n) - Нужно исправить MyLinkedList чтобы получить O(1)
         public void Delete(string id)
         {
             if (!dictCustomerID.ContainsKey(id.ToString()))
@@ -251,13 +252,13 @@ namespace Project_DataStructures
                 //if (dictCustomerID.ContainsKey(customer.CustomerID))
                 //    throw new ArgumentException($"Customer with the ID: '{customer.CustomerID}' is already exist in the table.");
 
-                Update(customer);
+                UpdateByID(customer);
                 //_customersTable.Insert(customer);
                 // AddToDictionaries(_customersTable.Head, CustomerField.All);
             }
         }
 
-        public void Update(Customer customer)
+        public void UpdateByID(Customer customer)
         {
             if (customer.CustomerID == "")
                 throw new ArgumentException("The customer ID is empty.");

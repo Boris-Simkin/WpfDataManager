@@ -20,9 +20,15 @@ namespace Project_DataStructures
     public partial class SelectionWindow : Window
     {
 
-        MyDB _db; 
+        MyDB _db;
 
         internal MyDB ResultDB { get; private set; }
+
+        protected virtual bool QuerySubmitted
+        {
+            get { return submitBtn.IsEnabled; }
+            set { submitBtn.IsEnabled = value; }
+        }
 
         internal SelectionWindow(MyDB db)
         {
@@ -32,13 +38,14 @@ namespace Project_DataStructures
             _db = db;
         }
 
+
         #region Events
         private void cancleBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void selectBtn_Click(object sender, RoutedEventArgs e)
+        private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
             this.Close();
@@ -50,7 +57,7 @@ namespace Project_DataStructures
             contactNameBox.IsEnabled ^= true;
             phoneNumberBox.IsEnabled ^= true;
             customerIdBox.IsEnabled ^= true;
-            submitBtn.IsEnabled = SatisfyFields();
+            QuerySubmitted = SatisfyFields();
             PrintMessage();
         }
 
@@ -61,7 +68,7 @@ namespace Project_DataStructures
 
         private void FieldsTextChanged(object sender, TextChangedEventArgs e)
         {
-            submitBtn.IsEnabled = SatisfyFields();
+            QuerySubmitted = SatisfyFields();
             PrintMessage();
 
         }
@@ -74,7 +81,7 @@ namespace Project_DataStructures
             if (!SelectedNotEmpty())
                 messageTextBlock.Text = "";
 
-            if (!submitBtn.IsEnabled)
+            if (!QuerySubmitted)
             {
                 if (ResultDB.IsEmpty() && SelectedNotEmpty())
                     messageTextBlock.Text = "No results containing all your search terms were found.";
@@ -91,7 +98,7 @@ namespace Project_DataStructures
 
         private void fields_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && submitBtn.IsEnabled)
+            if (e.Key == Key.Return && QuerySubmitted)
             {
                 this.DialogResult = true;
                 this.Close();
