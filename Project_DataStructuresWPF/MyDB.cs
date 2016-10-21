@@ -23,20 +23,29 @@ namespace Project_DataStructures
             All = ~0
         };
 
-        MyLinkedList<Customer> _customersTable = new MyLinkedList<Customer>();
+        MyDoublyLinkedList<Customer> _customersTable = new MyDoublyLinkedList<Customer>();
 
+        //Dictionaries for each field
+        //The dictionary (except the CustomerID) holds as value a Linked list of links to the table
         Dictionary<string, Link<Customer>> dictCustomerID = new Dictionary<string, Link<Customer>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> dictCompanyName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> dictContactName = new Dictionary<string, MyLinkedList<Link<Customer>>>();
-        Dictionary<string, MyLinkedList<Link<Customer>>> dictPhone = new Dictionary<string, MyLinkedList<Link<Customer>>>();
+        Dictionary<string, MyDoublyLinkedList<Link<Customer>>> dictCompanyName = new Dictionary<string, MyDoublyLinkedList<Link<Customer>>>();
+        Dictionary<string, MyDoublyLinkedList<Link<Customer>>> dictContactName = new Dictionary<string, MyDoublyLinkedList<Link<Customer>>>();
+        Dictionary<string, MyDoublyLinkedList<Link<Customer>>> dictPhone = new Dictionary<string, MyDoublyLinkedList<Link<Customer>>>();
 
         public MyDB() { }
 
-        public MyDB(MyLinkedList<Customer> customersTable)
+        /// <summary>
+        /// The constructor receive a linked list of customers
+        /// </summary>
+        /// <param name="customersTable"></param>
+        public MyDB(MyDoublyLinkedList<Customer> customersTable)
         {
             Insert(customersTable);
         }
 
+        /// <summary>
+        /// Returns whether the table is empty
+        /// </summary>
         public bool IsEmpty()
         {
             return _customersTable.IsEmpty();
@@ -62,16 +71,22 @@ namespace Project_DataStructures
             return dictPhone.ContainsKey(phone);
         }
 
+        /// <summary>
+        /// returns the number of customers
+        /// </summary>
         public int Count
         {
             get { return _customersTable.Count; }
         }
 
+        /// <summary>
+        /// Select customers by combination of specifying fields
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         public MyDB Select(Customer customer)
         {
             MyDB newDB = new MyDB();
-
-
             newDB = SelectBy(customer.CustomerID, CustomerField.CustomerID);
             if (!newDB.IsEmpty())
                 return newDB;
@@ -103,9 +118,11 @@ namespace Project_DataStructures
             return newDB;
         }
 
+        //Select Customers only by single field
+        //and return them as MyDB
         private MyDB SelectBy(string field, CustomerField selectBy)
         {
-            MyLinkedList<Link<Customer>> newList = new MyLinkedList<Link<Customer>>();
+            MyDoublyLinkedList<Link<Customer>> newList = new MyDoublyLinkedList<Link<Customer>>();
             MyDB result = new MyDB();
 
             if (selectBy == CustomerField.CustomerID && field != "")
@@ -155,20 +172,20 @@ namespace Project_DataStructures
 
             if (field.HasFlag(CustomerField.CompanyName))
                 if (!dictCompanyName.ContainsKey(link.Data.CompanyName))
-                    dictCompanyName.Add(link.Data.CompanyName, new MyLinkedList<Link<Customer>>(link));
+                    dictCompanyName.Add(link.Data.CompanyName, new MyDoublyLinkedList<Link<Customer>>(link));
                 else dictCompanyName[link.Data.CompanyName].Insert(link);
 
             if (field.HasFlag(CustomerField.ContactName))
                 if (!dictContactName.ContainsKey(link.Data.ContactName))
-                    dictContactName.Add(link.Data.ContactName, new MyLinkedList<Link<Customer>>(link));
+                    dictContactName.Add(link.Data.ContactName, new MyDoublyLinkedList<Link<Customer>>(link));
                 else dictContactName[link.Data.ContactName].Insert(link);
 
             if (field.HasFlag(CustomerField.Phone))
                 if (!dictPhone.ContainsKey(link.Data.Phone))
-                    dictPhone.Add(link.Data.Phone, new MyLinkedList<Link<Customer>>(link));
+                    dictPhone.Add(link.Data.Phone, new MyDoublyLinkedList<Link<Customer>>(link));
                 else dictPhone[link.Data.Phone].Insert(link);
         }
-
+        
         void RemoveFromDictionaries(Link<Customer> link, CustomerField field)
         {
             if (field.HasFlag(CustomerField.CustomerID))
@@ -193,9 +210,15 @@ namespace Project_DataStructures
             }
         }
 
-        public bool Insert(MyLinkedList<Customer> customersTable)
+        /// <summary>
+        /// Insert Customers as MyDoublyLinkedList
+        /// and return true if some of customers ID were reserved
+        /// </summary>
+        /// <param name="customersTable">MyDoublyLinkedList<Customer></param>
+        /// <returns></returns>
+        public bool Insert(MyDoublyLinkedList<Customer> customersTable)
         {
-            bool notFound = false;
+            bool reservedID = false;
             foreach (var customer in customersTable)
             {
                 if (!dictCustomerID.ContainsKey(customer.CustomerID))
@@ -203,22 +226,34 @@ namespace Project_DataStructures
                     _customersTable.Insert(customer);
                     AddToDictionaries(_customersTable.Head, CustomerField.All);
                 }
-                else notFound = true;
+                else reservedID = true;
             }
-            return notFound;
+            return reservedID;
         }
 
+        /// <summary>
+        /// Insert another MyDB into this instance of MyDB.
+        /// </summary>
+        /// <param name="db">MyDB</param>
         public void Insert(MyDB db)
         {
             Insert(db._customersTable);
         }
-
+        
+        /// <summary>
+        /// Insert a single customer
+        /// </summary>
+        /// <param name="customer"></param>
         public void Insert(Customer customer)
         {
-            Insert(new MyLinkedList<Customer>(new Customer(customer.CustomerID, customer.CompanyName,
+            Insert(new MyDoublyLinkedList<Customer>(new Customer(customer.CustomerID, customer.CompanyName,
                         customer.ContactName, customer.Phone)));
         }
 
+        /// <summary>
+        /// Removes customer from the table by it's ID
+        /// </summary>
+        /// <param name="id">CustomerID</param>
         public void Delete(string id)
         {
             if (!dictCustomerID.ContainsKey(id.ToString()))
@@ -229,23 +264,39 @@ namespace Project_DataStructures
             _customersTable.RemovePos(link);
         }
 
+        /// <summary>
+        /// Delete Customers by given list of Customers.
+        /// </summary>
+        /// <param name="db">IEnumerable Database that stores 'Customer's</param>
         public void MultipleDelete(IEnumerable db)
         {
             foreach (var item in db)
                 Delete(((Customer)item).CustomerID);
         }
-        
+
+        /// <summary>
+        /// Update Customers by given list of Customers.
+        /// </summary>
+        /// <param name="db">the table is MyDB</param>
         public void Update(MyDB db)
         {
             Update(db._customersTable);
         }
 
-        public void Update(MyLinkedList<Customer> customersTable)
+        /// <summary>
+        /// Update Customers by given list of Customers.
+        /// </summary>
+        /// <param name="customersTable">the table is MyDoublyLinkedList</param>
+        public void Update(MyDoublyLinkedList<Customer> customersTable)
         {
             foreach (var customer in customersTable)
                 UpdateByID(customer);
         }
 
+        /// <summary>
+        /// Updates only one row by given ID and fields to update
+        /// </summary>
+        /// <param name="customer"></param>
         public void UpdateByID(Customer customer)
         {
             if (customer.CustomerID == "")
@@ -277,6 +328,10 @@ namespace Project_DataStructures
             }
         }
 
+        /// <summary>
+        /// Convert MyDB to Microsoft's List
+        /// </summary>
+        /// <returns></returns>
         public List<Customer> ToList()
         {
             List<Customer> list = new List<Customer>();

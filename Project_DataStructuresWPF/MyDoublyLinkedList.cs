@@ -6,21 +6,18 @@ using System.Text;
 
 namespace Project_DataStructures
 {
-    class MyLinkedList<T> : IEnumerable<T>
+    class MyDoublyLinkedList<T> : IEnumerable<T>
     {
         private Link<T> _head;
 
         public Link<T> Head
         {
-            get
-            {
-                return _head;
-            }
+            get { return _head; }
         }
 
-        public MyLinkedList() { }
+        public MyDoublyLinkedList() { }
 
-        public MyLinkedList(T data)
+        public MyDoublyLinkedList(T data)
         {
             Insert(data);
         }

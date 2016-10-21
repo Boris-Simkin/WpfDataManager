@@ -28,13 +28,6 @@ namespace Project_DataStructures
         //count tabs created by selection
         static byte selectionTabCount = 0;
 
-        //enum SelectMode
-        //{
-        //    Select,
-        //    Delete,
-        //    Update
-        //}
-
         public MainWindow()
         {
             InitializeComponent();
@@ -84,7 +77,6 @@ namespace Project_DataStructures
         //Statusbar total row counter
         private void SetRowCount()
         {
-            // lblRowCount.Text = currentDataGrid.Items.Count.ToString();
             lblRowCount.Text = CurrentTable.Count.ToString();
         }
 

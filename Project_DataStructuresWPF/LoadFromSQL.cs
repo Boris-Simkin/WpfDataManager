@@ -10,9 +10,9 @@ namespace Project_DataStructures
 {
     static class LoadFromSQL
     {
-        public static MyLinkedList<Customer> Load()
+        public static MyDoublyLinkedList<Customer> Load()
         {
-            MyLinkedList<Customer> customersTable = new MyLinkedList<Customer>();
+            MyDoublyLinkedList<Customer> customersTable = new MyDoublyLinkedList<Customer>();
 
             string location = "Northwind.mdb";
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; data source=" + location;
