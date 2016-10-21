@@ -193,6 +193,13 @@ namespace Project_DataStructures
                 {
                     var newValue = (e.EditingElement as TextBox).Text;
 
+                    //Don't allow empty fields because MyDB does not support that.
+                    if (newValue == "")
+                    {
+                        currentDataGrid.CancelEdit();
+                        return;
+                    }
+
                     DataGridCellInfo selected = dataGrid.SelectedCells[0];
                     string selectedId = ((Customer)selected.Item).CustomerID;
                     Customer customer = new Customer(selectedId, "", "", "");

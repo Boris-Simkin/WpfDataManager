@@ -11,22 +11,34 @@ namespace Project_DataStructures
     {
         CustomerFields customerFields = new CustomerFields();
 
+       // internal MyDB DBForUpdate { get; private set; }
+
         internal UpdateWindow(MyDB db) : base(db)
         {
             submitBtn.Content = "Update";
             window.Title = "Update";
             window.Height += 100;
 
-            customerFields.companyNameBox.TextChanged += FieldsTextChanged;
-            customerFields.contactNameBox.TextChanged += FieldsTextChanged;
-            customerFields.phoneNumberBox.TextChanged += FieldsTextChanged;
+            customerFields.TextChanged += FieldsTextChanged;
+            customerFields.EnterPressed += CustomerFields_EnterPressed;
 
             submitBtn.Click += SubmitBtn_Click;
 
             stackPanel.Children.Add(customerFields.grid);
+
         }
 
-        private void SubmitBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void CustomerFields_EnterPressed(object sender, EventArgs e)
+        {
+            if (!customerFields.DetailsFieldsEmpty())
+            {
+                ApplyUpdates();
+                this.DialogResult = true;
+                this.Close();
+            }
+        }
+
+        private void ApplyUpdates()
         {
             foreach (var customer in ResultDB)
             {
@@ -39,7 +51,12 @@ namespace Project_DataStructures
             }
         }
 
-        private void FieldsTextChanged(object sender, TextChangedEventArgs e)
+        private void SubmitBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ApplyUpdates();
+        }
+
+        private void FieldsTextChanged(object sender, EventArgs e)
         {
             submitBtn.IsEnabled = !customerFields.DetailsFieldsEmpty() && QuerySubmitted;
         }
@@ -48,10 +65,7 @@ namespace Project_DataStructures
 
         protected override bool QuerySubmitted
         {
-            get
-            {
-                return querySubmitted;
-            }
+            get { return querySubmitted; }
             set
             {
                 querySubmitted = value;

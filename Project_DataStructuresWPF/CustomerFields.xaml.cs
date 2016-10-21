@@ -25,6 +25,9 @@ namespace Project_DataStructures
             this.RemoveLogicalChild(grid);
         }
 
+        public event EventHandler EnterPressed;
+        public event EventHandler TextChanged;
+
         public bool DetailsFieldsEmpty()
         {
             return companyNameBox.Text == "" && contactNameBox.Text == "" && phoneNumberBox.Text == "";
@@ -32,12 +35,14 @@ namespace Project_DataStructures
 
         private void fields_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Return)
+                if (EnterPressed != null) EnterPressed(this, EventArgs.Empty);
         }
 
         private void FieldsTextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (TextChanged != null)
+                TextChanged(this, EventArgs.Empty);
         }
     }
 }
