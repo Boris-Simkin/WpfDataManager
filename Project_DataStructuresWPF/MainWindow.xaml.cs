@@ -261,16 +261,26 @@ namespace Project_DataStructures
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectionWindow selectionWindow = new SelectionWindow(CurrentTable);
-            if (selectionWindow.ShowDialog() == true)
+            SelectWindow selectWindow = new SelectWindow(CurrentTable, new List<string>(tableList.Keys));
+            if (selectWindow.ShowDialog() == true)
             {
-                CreateNewTable("selected items " + ++selectionTabCount);
-
-                CurrentTable.Insert(selectionWindow.ResultDB);
+                if (selectWindow.newTable)
+                {
+                    CreateNewTable("selected items " + ++selectionTabCount);
+                }
+                else
+                {
+                    var selectedTab = tableTabControl.Items.OfType<TabItem>().SingleOrDefault(n => n.Header.ToString().Equals(selectWindow.SelectedTable));
+                    selectedTab.IsSelected = true;
+                }
+                CurrentTable.Insert(selectWindow.ResultDB);
 
                 //Enabling Delete, Update &Select buttons
                 SetButtonsActivation(true);
                 RefreshGrid();
+
+                SetSelectedRowCount();
+                SetRowCount();
             }
         }
 
@@ -310,6 +320,8 @@ namespace Project_DataStructures
                     RefreshGrid();
                     //Enabling Delete, Update &Select buttons
                     SetButtonsActivation(true);
+                    SetSelectedRowCount();
+                    SetRowCount();
                 }
             }
         }

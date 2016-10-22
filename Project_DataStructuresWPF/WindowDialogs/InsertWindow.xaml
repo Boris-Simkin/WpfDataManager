@@ -10,11 +10,11 @@
     <Grid>
         <TextBox x:Name="customerIdBox" HorizontalAlignment="Left" Height="18" Margin="20,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" TextChanged="CustomerIDTextChanged" KeyDown="fields_KeyDown"/>
         <TextBlock x:Name="customerIdTxt" HorizontalAlignment="Left" Margin="20,10,0,0" TextWrapping="Wrap" Text="Customer ID" VerticalAlignment="Top"/>
-        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="123,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" KeyDown="fields_KeyDown"/>
+        <TextBox x:Name="companyNameBox" HorizontalAlignment="Left" Height="18" Margin="123,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" KeyDown="fields_KeyDown" TextChanged="FieldsTextChanged"/>
         <TextBlock x:Name="companyNameTxt" HorizontalAlignment="Left" Margin="123,10,0,0" TextWrapping="Wrap" Text="Company name" VerticalAlignment="Top" Width="92"/>
-        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="267,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" KeyDown="fields_KeyDown"/>
+        <TextBox x:Name="contactNameBox" HorizontalAlignment="Left" Height="18" Margin="267,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" KeyDown="fields_KeyDown" TextChanged="FieldsTextChanged"/>
         <TextBlock x:Name="contactNameTxt" HorizontalAlignment="Left" Margin="267,10,0,0" TextWrapping="Wrap" Text="Contact name" VerticalAlignment="Top"/>
-        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="412,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" KeyDown="fields_KeyDown"/>
+        <TextBox x:Name="phoneNumberBox" HorizontalAlignment="Left" Height="18" Margin="412,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87" KeyDown="fields_KeyDown" TextChanged="FieldsTextChanged"/>
         <TextBlock x:Name="phoneNumTxt" HorizontalAlignment="Left" Margin="412,10,0,0" TextWrapping="Wrap" Text="Phone number" VerticalAlignment="Top"/>
         <Button x:Name="cancleBtn" Content="Cancle" HorizontalAlignment="Left" Margin="397,90,0,0" VerticalAlignment="Top" Width="75" Click="cancleBtn_Click" IsCancel="True"/>
         <Button x:Name="InsertBtn" Content="Insert" HorizontalAlignment="Left" Margin="60,90,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="InsertBtn_Click"/>

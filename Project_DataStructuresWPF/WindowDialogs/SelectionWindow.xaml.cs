@@ -38,7 +38,6 @@ namespace Project_DataStructures
             _db = db;
         }
 
-
         #region Events
         private void cancleBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -61,18 +60,26 @@ namespace Project_DataStructures
             PrintMessage();
         }
 
-        private bool DetailsFieldsEmpty()
+        private void fields_KeyDown(object sender, KeyEventArgs e)
         {
-            return companyNameBox.Text == "" && contactNameBox.Text == "" && phoneNumberBox.Text == "";
+            if (e.Key == Key.Return && QuerySubmitted)
+            {
+                this.DialogResult = true;
+                this.Close();
+            }
         }
 
         private void FieldsTextChanged(object sender, TextChangedEventArgs e)
         {
             QuerySubmitted = SatisfyFields();
             PrintMessage();
-
         }
         #endregion
+
+        private bool DetailsFieldsEmpty()
+        {
+            return companyNameBox.Text == "" && contactNameBox.Text == "" && phoneNumberBox.Text == "";
+        }
 
         private void PrintMessage()
         {
@@ -96,20 +103,10 @@ namespace Project_DataStructures
 
         }
 
-        private void fields_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return && QuerySubmitted)
-            {
-                this.DialogResult = true;
-                this.Close();
-            }
-        }
-
         private bool SelectedNotEmpty()
         {
             return ((companyNameBox.IsEnabled && !DetailsFieldsEmpty())
               || (!companyNameBox.IsEnabled && customerIdBox.Text != ""));
-
         }
 
         private bool SatisfyFields()

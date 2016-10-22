@@ -27,6 +27,7 @@ namespace Project_DataStructures
 
         MyDB _db;
 
+        #region Events
         private void InsertBtn_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
@@ -49,15 +50,29 @@ namespace Project_DataStructures
 
         private void CustomerIDTextChanged(object sender, TextChangedEventArgs e)
         {
-            bool customerIdSatisfy = !_db.ContainsCustomerID(customerIdBox.Text);
 
-            if (!customerIdSatisfy)
+            if (!CustomerIdSatisfy())
                 errorMessageTextBlock.Visibility = Visibility.Visible;
             else
                 errorMessageTextBlock.Visibility = Visibility.Hidden;
 
+            InsertBtn.IsEnabled = customerIdBox.Text.Length > 0 && CustomerIdSatisfy() && DetailsNotEmpty();
+        }
 
-            InsertBtn.IsEnabled = customerIdBox.Text.Length > 0 && customerIdSatisfy;
+        private void FieldsTextChanged(object sender, TextChangedEventArgs e)
+        {
+            InsertBtn.IsEnabled = customerIdBox.Text.Length > 0 && CustomerIdSatisfy() && DetailsNotEmpty();
+        }
+        #endregion
+
+        private bool DetailsNotEmpty()
+        {
+            return companyNameBox.Text != "" && contactNameBox.Text != "" && phoneNumberBox.Text != "";
+        }
+
+        private bool CustomerIdSatisfy()
+        {
+            return !_db.ContainsCustomerID(customerIdBox.Text);
         }
     }
 }
