@@ -73,7 +73,7 @@ namespace Project_DataStructures
         {
             lblSelectedRowCount.Text = currentDataGrid.SelectedItems.Count.ToString();
         }
-
+         
         //Statusbar total row counter
         private void SetRowCount()
         {
