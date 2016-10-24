@@ -36,13 +36,15 @@ namespace Project_DataStructures
             {
                 querySubmitted = value;
                 submitBtn.IsEnabled = QuerySubmitted;
-                selectWindowCopyTo.checkBox.IsEnabled = value;
-                selectWindowCopyTo.tablesComboBox.IsEnabled = value;
-
-                if (selectWindowCopyTo.checkBox.IsChecked == true)
-                    selectWindowCopyTo.tablesComboBox.IsEnabled = false;
-                if (selectWindowCopyTo.checkBox.IsChecked == false && value)
-                    selectWindowCopyTo.tablesComboBox.IsEnabled = true;
+                if (selectWindowCopyTo.tablesComboBox.Items.Count != 0)
+                {
+                    selectWindowCopyTo.checkBox.IsEnabled = value;
+                    selectWindowCopyTo.tablesComboBox.IsEnabled = value;
+                    if (selectWindowCopyTo.checkBox.IsChecked == true)
+                        selectWindowCopyTo.tablesComboBox.IsEnabled = false;
+                    if (selectWindowCopyTo.checkBox.IsChecked == false && value)
+                        selectWindowCopyTo.tablesComboBox.IsEnabled = true;
+                }
             }
         }
     }

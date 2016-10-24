@@ -257,7 +257,11 @@ namespace Project_DataStructures
 
         private void selectBtn_Click(object sender, RoutedEventArgs e)
         {
-            SelectWindow selectWindow = new SelectWindow(CurrentTable, new List<string>(tableList.Keys));
+            var currentTabItem = (TabItem)tableTabControl.SelectedItem;
+            string currentTableName = currentTabItem.Header.ToString();
+            var tableNames = (new List<string>(tableList.Keys));
+            tableNames.Remove(currentTableName);
+            SelectWindow selectWindow = new SelectWindow(CurrentTable, tableNames);
             if (selectWindow.ShowDialog() == true)
             {
                 if (selectWindow.newTable)

@@ -22,6 +22,8 @@ namespace Project_DataStructures
         public SelectWindowCopyTo()
         {
             InitializeComponent();
+            if (tablesComboBox.Items.Count == 0)
+                checkBox.IsEnabled = false;
             this.RemoveLogicalChild(grid);
         }
 
@@ -33,7 +35,8 @@ namespace Project_DataStructures
 
         private void checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            tablesComboBox.IsEnabled = true;
+            if (tablesComboBox.Items.Count != 0)
+                tablesComboBox.IsEnabled = true;
         }
     }
 }
