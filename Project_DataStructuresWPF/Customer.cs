@@ -17,7 +17,7 @@ namespace Project_DataStructures
             Phone = phone;
         }
 
-        public string CustomerID { get; set; }
+        public string CustomerID { get; private set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }

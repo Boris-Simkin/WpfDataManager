@@ -196,10 +196,6 @@ namespace Project_DataStructures
                     string selectedId = ((Customer)selected.Item).CustomerID;
                     Customer customer = new Customer(selectedId, "", "", "");
 
-                    //Disabling the accesss to the CustomerID key field
-                    if (column.Header.Equals("CustomerID"))
-                        column.IsReadOnly = true;
-
                     if (column.Header.Equals("CompanyName"))
                         customer.CompanyName = newValue;
 
